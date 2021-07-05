@@ -15,5 +15,4 @@ document.write('Hello, world!'); # JS
 print "Hello, world!"   # Python
 
 MsgBox "Hello, World!"  # VBscript
-
 ```
