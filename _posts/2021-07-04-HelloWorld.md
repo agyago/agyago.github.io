@@ -1,6 +1,6 @@
 ---
 layout: post
-decription: This is my first ever post
+description: This is my first ever post, hello world in different language
 ---
 # Hello world
 
