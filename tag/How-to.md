@@ -1,6 +1,6 @@
 ---
 layout: tagpage
-title: "Tag: Basics"
-tag: Basics
+title: "Tag: How-to"
+tag: How-to
 robots: noindex
 ---
