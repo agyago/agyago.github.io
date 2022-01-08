@@ -36,7 +36,7 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
   
   <p> NOTE: String and Integer can't be mixed together. It is a *TypeError* </p>
   
-  <p> To check the datatype, use the function **type** </p>
+   To check the datatype, use the function **type**
   
 ```python
 >>> type("hello")
