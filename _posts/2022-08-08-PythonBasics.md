@@ -46,6 +46,7 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
 >>> type(3.2)
 <class 'float'>
 ```
+
   <dt> Variables </dt>
   <dd> Variables - name of containers for storing values. It can be any data type: String, Integer, Float..etc. 
   Generally, variables can be named anything but the general rule is to not use the built-in python functions like print. 
@@ -53,9 +54,10 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
   variables are case sensitive</dd>
   <dd> Assignment - stored value inside a variable </dd>
   
- To show the variable assignment in python, use **print** function
+ <p>To show the variable assignment in python, use **print** function</p>
   
-  ```python
+  
+```python
 >>> hello ="hello_world" #hello=variable;hello_world=assignment
 >>>  hello="hi"
   File "<stdin>", line 1
@@ -70,6 +72,7 @@ SyntaxError: invalid syntax
 >>> print(hello)
 hello_world
 ```
+  
   
   <dd> Integer Arithmetic operators </dd>
   <dd> a + b = Adds a and b </dd>
@@ -98,6 +101,7 @@ hello_world
 >>> a%b
 1
 ```
+
   <dt> Conditionals </dt>
   <dd> <b>Compare</b> </dd>
   <dd> a == b: a is equal to b </dd>
@@ -141,6 +145,7 @@ False
 >>> not False
 True
 ```
+
   <dt> Branching conditionals </dt>
   <dd> <b> if-elif-else block </b> </dd>
   
