@@ -1,3 +1,9 @@
+---
+layout: post
+description: Python Crash Course basics
+tags: python
+---
+
 # BASICS
 **Problem Solving!**
 
