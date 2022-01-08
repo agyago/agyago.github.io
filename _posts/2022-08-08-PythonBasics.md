@@ -34,9 +34,9 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
   <dd> Integer - whole numbers. eg. 1,2,3,4,100,1000 </dd>
   <p> Float   - decimal numbers. eg. 1.2, 3.5 <p>
   
-  NOTE: String and Integer can't be mixed together. It is a *TypeError*
+  <p> NOTE: String and Integer can't be mixed together. It is a *TypeError* </p>
   
-  To check the datatype, use the function **type**
+  <p> To check the datatype, use the function **type** </p>
   
 ```python
 >>> type("hello")
