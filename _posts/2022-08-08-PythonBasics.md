@@ -34,7 +34,7 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
   <dd> Integer - whole numbers. eg. 1,2,3,4,100,1000 </dd>
   <dd> Float   - decimal numbers. eg. 1.2, 3.5 </dd>
   
-  <p> NOTE: String and Integer can't be mixed together. It is a *TypeError* </p>
+  NOTE: String and Integer can't be mixed together. It is a *TypeError*
   
    To check the datatype, use the function **type**
   
@@ -54,7 +54,7 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
   variables are case sensitive</dd>
   <dd> Assignment - stored value inside a variable </dd>
   
- <p>To show the variable assignment in python, use **print** function</p>
+ To show the variable assignment in python, use **print** function
   
   
 ```python
