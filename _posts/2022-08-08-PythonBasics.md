@@ -28,11 +28,11 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
 ---
 
 <p> With that here are the basics of Python. </p>
-<dl>
-  <dt> Data Types </dt>
-  <dd> String  - texts wrapped in quotation mark. e.g "One",'one',"Hello World" </dd>
+
+  <p> Data Types </p>
+  <p> String  - texts wrapped in quotation mark. e.g "One",'one',"Hello World" </p>
   <dd> Integer - whole numbers. eg. 1,2,3,4,100,1000 </dd>
-  <dd> Float   - decimal numbers. eg. 1.2, 3.5 </dd>
+  <p> Float   - decimal numbers. eg. 1.2, 3.5 <p>
   
   NOTE: String and Integer can't be mixed together. It is a *TypeError*
   
