@@ -29,16 +29,16 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
 
 <p> With that here are the basics of Python. </p>
 
-  <p> Data Types </p>
-  <p> String  - texts wrapped in quotation mark. e.g "One",'one',"Hello World" </p>
+  <dt> Data Types </dt>
+  <dd> String  - texts wrapped in quotation mark. e.g "One",'one',"Hello World" </dd>
   <dd> Integer - whole numbers. eg. 1,2,3,4,100,1000 </dd>
-  <p> Float   - decimal numbers. eg. 1.2, 3.5 <p>
+  <dd> Float   - decimal numbers. eg. 1.2, 3.5 </dd>
   
   <p> NOTE: String and Integer can't be mixed together. It is a *TypeError* </p>
   
   <p> To check the datatype, use the function **type** </p>
   
-```python
+```
 >>> type("hello")
 <class 'str'>
 >>> type(123)
