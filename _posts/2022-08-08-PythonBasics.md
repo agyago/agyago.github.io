@@ -38,7 +38,7 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
   
   <p> To check the datatype, use the function **type** </p>
   
-```
+```python
 >>> type("hello")
 <class 'str'>
 >>> type(123)
