@@ -185,7 +185,63 @@ else:
  
 spoiled
 ```
-
+  <dt> Loops </dt>
+  <dd> <b> While loops </b> </dd>
+  <dd> continious loop/exceute based on the value of a condition. It start by using while and semi colon and new line indentation, just like an if statement.
+  During looping initializing variables matters, check before running the program else you might encounter a NameError or worse endless loop.</dd>
   
-    
-    
+  ```python
+  variable=assignment
+  while variable is True:
+     run code
+  ```
+  
+  <dd> <b> For loops </b> </dd>
+  <dd>  for loop can iterate over a sequence of values of any type, not just a range of numbers. Mostly used where there is a predefined sequence or range of numbers </dd>
+  
+```python
+for variable in sequence
+    body
+```
+
+Range function - generates a sequence of integer numbers. eg. range(5) - will count from 0 to 4 ; range(1,5) - count 1 to 4
+
+---
+**REMEMBER**
+	
+for loops are best when you want to iterate over a known sequence of elements but when you want to operate while a certain condition is true, while loops are the best choice.
+	
+---
+
+```python
+>>> while count <=10:
+...   count+=1
+...   print(count)
+... 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+>>> for i in range(10):
+...   print(i)
+... 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+>>> 
+
+```
