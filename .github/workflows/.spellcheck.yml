@@ -26,3 +26,4 @@ jobs:
         name: Spellcheck
         with:
           source_files: "_posts/*.md"
+          task_name: Markdown
