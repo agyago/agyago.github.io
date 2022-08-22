@@ -8,10 +8,20 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+:root {
+  --background-color: #333;
+  --text-color: #fff;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --background-color: #fff;
+    --text-color: #111;
+  }
+}
 html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 body {
-  background-color: #131313;
-  color: #f7f1ff;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 .w3-sidebar {
   z-index: 3;
@@ -19,7 +29,6 @@ body {
   top: 43px;
   bottom: 0;
   height: inherit;
-  color:bisque;
 }
 </style>
 <body>
