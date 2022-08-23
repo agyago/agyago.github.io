@@ -8,7 +8,7 @@ tags: python
 **Problem Solving!**
 
 When I was starting, my initial thinking was to jump in to know the syntax and memorize all the things/gotcha that I should know in a programming/scripting language.
-But I was wrong, first is to understand the problem that I need to solve. Ofcourse syntax are important but understanding the problem is very important to learn before jumping into coding
+But I was wrong, first is to understand the problem that I need to solve. Of course syntax are important but understanding the problem is very important to learn before jumping into coding
 
 *tips*
 1. Gather as much information:
@@ -30,8 +30,8 @@ But I was wrong, first is to understand the problem that I need to solve. Ofcour
 <p> With that here are the basics of Python. </p>
   <dt> Data Types </dt>
   <dd> String  - texts wrapped in quotation mark. e.g "One",'one',"Hello World" </dd>
-  <dd> Integer - whole numbers. eg. 1,2,3,4,100,1000 </dd>
-  <dd> Float   - decimal numbers. eg. 1.2, 3.5 </dd>
+  <dd> Integer - whole numbers. e.g. 1,2,3,4,100,1000 </dd>
+  <dd> Float   - decimal numbers. e.g. 1.2, 3.5 </dd>
   
   NOTE: String and Integer can't be mixed together. It is a *TypeError*
   
@@ -187,7 +187,7 @@ spoiled
 ```
   <dt> Loops </dt>
   <dd> <b> While loops </b> </dd>
-  <dd> continious loop/exceute based on the value of a condition. It start by using while and semi colon and new line indentation, just like an if statement.
+  <dd> continuous loop/execute based on the value of a condition. It start by using while and semi colon and new line indentation, just like an if statement.
   During looping initializing variables matters, check before running the program else you might encounter a NameError or worse endless loop.</dd>
   
   ```python
@@ -204,7 +204,7 @@ for variable in sequence
     body
 ```
 
-Range function - generates a sequence of integer numbers. eg. range(5) - will count from 0 to 4 ; range(1,5) - count 1 to 4
+Range function - generates a sequence of integer numbers. e.g. range(5) - will count from 0 to 4 ; range(1,5) - count 1 to 4
 
 ---
 **REMEMBER**
