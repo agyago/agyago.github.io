@@ -127,3 +127,9 @@ cout
 JS
 MsgBox
 VBscript
+kswapd
+systcl
+MemFree
+MemTotal
+msg
+sephamores
