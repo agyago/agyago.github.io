@@ -2,8 +2,8 @@ name: Merge Release Into Main
 
 on:
   push:
-    branches:
-      - 'dev'
+    branches-ignore:
+      - 'main'
 
 jobs:
   main:
