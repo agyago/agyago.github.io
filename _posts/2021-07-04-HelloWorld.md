@@ -3,16 +3,15 @@ layout: post
 description: This is my first ever post, hello world in different language
 tags: helloworld python bash javascript
 ---
-&nbsp; # Hello world1
+  # Hello world
 
-&nbsp; ```
-echo "Hello World" # Bash
+```
+  echo "Hello World" # Bash
 
-std::cout << "Hello, world! # C++
+  std::cout << "Hello, world! # C++
 
-document.write('Hello, world!'); # JS
+  document.write('Hello, world!'); # JS
 
-print "Hello, world!"   # Python
+  print "Hello, world!"   # Python
 
-MsgBox "Hello, World!"  # VBscript
-&nbsp; ```
+```
