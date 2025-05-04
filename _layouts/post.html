@@ -36,12 +36,16 @@ layout: defaults
 .post-title {
   margin-bottom: 10px;
   line-height: 1.2;
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .post-meta {
   color: #666;
   font-size: 0.9em;
   margin-bottom: 20px;
+  word-wrap: break-word;
 }
 
 .post-tags {
@@ -56,6 +60,7 @@ layout: defaults
   border-radius: 3px;
   text-decoration: none;
   font-size: 0.9em;
+  white-space: nowrap;
 }
 
 .tag:hover {
@@ -81,16 +86,27 @@ layout: defaults
 /* Mobile improvements */
 @media screen and (max-width: 768px) {
   .post-title {
-    font-size: 28px;
+    font-size: 24px;  
+    word-break: break-word;
   }
   
   .post-meta {
     font-size: 0.85em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .post-tags {
+    margin-left: 0; 
+    margin-top: 5px;  
+    width: 100%;  
   }
   
   .tag {
     display: inline-block;
     margin: 2px;
+    font-size: 0.8em;  /* Make tags slightly smaller on mobile */
   }
 }
 </style>
