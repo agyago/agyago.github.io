@@ -26,9 +26,8 @@ layout: defaults
     {% endfor %}
   </div>
 </div>
-
 <style>
-
+/* Tag page styles */
 .tag-page {
   max-width: 800px;
 }
@@ -37,6 +36,8 @@ layout: defaults
   margin-bottom: 30px;
   padding-bottom: 10px;
   border-bottom: 2px solid #eee;
+  word-wrap: break-word; 
+  overflow-wrap: break-word;  
 }
 
 .tagged-posts {
@@ -56,6 +57,8 @@ layout: defaults
 .post-preview .post-title {
   font-size: 24px;
   margin-bottom: 10px;
+  word-wrap: break-word;  
+  overflow-wrap: break-word;  
 }
 
 .post-preview .post-title a {
@@ -97,6 +100,11 @@ layout: defaults
 @media screen and (max-width: 768px) {
   .post-preview .post-title {
     font-size: 20px;
+    word-break: break-word; 
+  }
+  
+  .tag-title {
+    font-size: 24px;  
   }
 }
 </style>
