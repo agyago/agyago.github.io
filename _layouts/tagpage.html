@@ -1,110 +1,15 @@
 ---
 layout: defaults
 ---
-<div class="tag-page">
-  <h1 class="tag-title">Tag: {{ page.tag }}</h1>
-  
-  <div class="tagged-posts">
-    {% for post in site.tags[page.tag] %}
-    <article class="post-preview">
-      <h2 class="post-title">
-        <a href="{{ post.url }}">{{ post.title }}</a>
-      </h2>
-      
-      <div class="post-meta">
-        <time datetime="{{ post.date | date_to_xmlschema }}">
-          {{ post.date | date_to_string }}
-        </time>
-      </div>
-      
-      {% if post.description %}
-      <div class="post-description">
-        {{ post.description }}
-      </div>
-      {% endif %}
-    </article>
-    {% endfor %}
-  </div>
+<div class="post">
+<h1>Tag: {{ page.tag }}</h1>
+<ul>
+{% for post in site.tags[page.tag] %}
+  <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
+    {{ post.description }}
+  </li>
+{% endfor %}
+</ul>
 </div>
-<style>
-/* Tag page styles */
-.tag-page {
-  max-width: 800px;
-}
+<hr>
 
-.tag-title {
-  margin-bottom: 30px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #eee;
-  word-wrap: break-word; 
-  overflow-wrap: break-word;  
-}
-
-.tagged-posts {
-  margin-top: 20px;
-}
-
-.post-preview {
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.post-preview:last-child {
-  border-bottom: none;
-}
-
-.post-preview .post-title {
-  font-size: 24px;
-  margin-bottom: 10px;
-  word-wrap: break-word;  
-  overflow-wrap: break-word;  
-}
-
-.post-preview .post-title a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.post-preview .post-title a:hover {
-  text-decoration: underline;
-}
-
-.post-meta {
-  font-size: 0.9em;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.post-description {
-  font-size: 0.95em;
-  line-height: 1.6;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .tag-title {
-    border-bottom-color: #444;
-  }
-  
-  .post-preview {
-    border-bottom-color: #444;
-  }
-  
-  .post-meta {
-    color: #aaa;
-  }
-}
-
-/* Mobile improvements */
-@media screen and (max-width: 768px) {
-  .post-preview .post-title {
-    font-size: 20px;
-    word-break: break-word; 
-  }
-  
-  .tag-title {
-    font-size: 24px;  
-  }
-}
-</style>
