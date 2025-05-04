@@ -41,11 +41,20 @@
       height: inherit;
     }
 
+    /* Fix for titles being cut off */
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      padding: 0.5em 0;
+    }
+
+    /* Ensure content doesn't overflow */
     .container {
       margin-left: 250px;
       padding: 20px;
       max-width: 100%;
       overflow-wrap: break-word;
+      width: calc(100% - 250px);
+      box-sizing: border-box;
     }
 
     pre, code {
@@ -80,6 +89,19 @@
       .container {
         margin-left: 0;
         padding: 15px;
+        width: 100%;
+      }
+      
+      /* Fix for W3.CSS interference */
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* Ensure titles are visible */
+      h1, h2, h3, h4, h5, h6 {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
       }
     }
   </style>
