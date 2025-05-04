@@ -1,4 +1,3 @@
-```css
 #lightbox {width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: rgba(0,0,0,0.85); z-index: 9999999; line-height: 0; cursor: pointer; display: none;}
 #lightbox .img {
     position: relative; 
@@ -94,7 +93,6 @@ transform-origin: 50% 50%;
     user-select: none;
 }
 
-/* MOBILE IMPROVEMENTS */
 @media screen and (max-width: 768px) {
     /* Make navigation buttons smaller on mobile */
     #lightbox #prev, #lightbox #next {
@@ -114,10 +112,9 @@ transform-origin: 50% 50%;
         margin-left: 18px;
     }
     
-    /* Ensure video container doesn't exceed screen */
+    
     #lightbox .videoWrapperContainer {
         max-width: 95%;
         margin: 0 auto;
     }
 }
-```
