@@ -92,3 +92,29 @@ transform-origin: 50% 50%;
     -ms-user-select: none;      
     user-select: none;
 }
+
+@media screen and (max-width: 768px) {
+    /* Make navigation buttons smaller on mobile */
+    #lightbox #prev, #lightbox #next {
+        font-size: 40px;
+        padding: 0 10px;
+    }
+    
+    /* Increase touch target for close button */
+    #lightbox #close {
+        height: 60px;
+        width: 60px;
+    }
+    
+    /* Adjust X position for better mobile tapping */
+    #lightbox #close:after, #lightbox #close:before {
+        margin-top: 28px;
+        margin-left: 18px;
+    }
+    
+    
+    #lightbox .videoWrapperContainer {
+        max-width: 95%;
+        margin: 0 auto;
+    }
+}

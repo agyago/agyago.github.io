@@ -1,72 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>{{ page.title }}</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-:root {
-  --background-color: #333;
-  --text-color: #fff;
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --background-color: #fff;
-    --text-color: #111;
-  }
-}
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-.w3-sidebar {
-  z-index: 3;
-  width: 250px;
-  top: 43px;
-  bottom: 0;
-  height: inherit;
-}
-</style>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    :root {
+      --background-color: #333;
+      --text-color: #fff;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --background-color: #fff;
+        --text-color: #111;
+      }
+    }
+
+    html, body, h1, h2, h3, h4, h5, h6 {
+      font-family: "Roboto", sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    .w3-sidebar {
+      z-index: 3;
+      width: 250px;
+      top: 43px;
+      bottom: 0;
+      height: inherit;
+    }
+
+    /* Fix for titles being cut off */
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      padding: 0.5em 0;
+    }
+
+    /* Ensure content doesn't overflow */
+    .container {
+      margin-left: 250px;
+      padding: 20px;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      width: calc(100% - 250px);
+      box-sizing: border-box;
+    }
+
+    pre, code {
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-width: 100%;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    @media screen and (max-width: 768px) {
+      .w3-sidebar {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: var(--background-color);
+      }
+
+      .container {
+        margin-left: 0;
+        padding: 15px;
+        width: 100%;
+      }
+      
+      /* Fix for W3.CSS interference */
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* Ensure titles are visible */
+      h1, h2, h3, h4, h5, h6 {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+      }
+    }
+  </style>
+</head>
 <body>
 
+  {% include header.html %}
+  {% include sidebar.html %}
 
-{% include header.html %}
+  <div class="container">
+    {{ content }}
+  </div>
 
-{% include sidebar.html %}
-<br>
-&nbsp;&nbsp;&nbsp;{{ content }}  
+  <script>
+    var mySidebar = document.getElementById("mySidebar");
+    var overlayBg = document.getElementById("myOverlay");
 
-<!-- END MAIN -->
-</div>
+    function w3_open() {
+      if (mySidebar.style.display === 'block') {
+        mySidebar.style.display = 'none';
+        overlayBg.style.display = "none";
+      } else {
+        mySidebar.style.display = 'block';
+        overlayBg.style.display = "block";
+      }
+    }
 
-<script>
-// Get the Sidebar
-var mySidebar = document.getElementById("mySidebar");
-
-// Get the DIV with overlay effect
-var overlayBg = document.getElementById("myOverlay");
-
-// Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
-  if (mySidebar.style.display === 'block') {
-    mySidebar.style.display = 'none';
-    overlayBg.style.display = "none";
-  } else {
-    mySidebar.style.display = 'block';
-    overlayBg.style.display = "block";
-  }
-}
-
-// Close the sidebar with the close button
-function w3_close() {
-  mySidebar.style.display = "none";
-  overlayBg.style.display = "none";
-}
-</script>
+    function w3_close() {
+      mySidebar.style.display = "none";
+      overlayBg.style.display = "none";
+    }
+  </script>
 
 </body>
 </html>
