@@ -10,26 +10,24 @@ jobs:
     name: Create PR Release to Main
     runs-on: ubuntu-latest
     steps:
-      - name: git checkout
+      - name: Git Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # https://github.com/marketplace/actions/github-pull-request-action
-      - name: create pull request
+      - name: Create Pull Request
         id: open-pr
         uses: repo-sync/pull-request@v2
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           destination_branch: ${{ github.event.repository.default_branch }}
           pr_title: "[Automated] Merge ${{ github.ref_name }} into ${{ github.event.repository.default_branch }}"
           pr_body: "Automated Pull Request"
 
-      # https://github.com/marketplace/actions/enable-pull-request-automerge
-      - name: enable automerge
+      - name: Enable Automerge
         if: steps.open-pr.outputs.pr_number != ''
         uses: peter-evans/enable-pull-request-automerge@v2
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
           merge-method: merge
