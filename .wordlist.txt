@@ -133,3 +133,8 @@ MemFree
 MemTotal
 msg
 sephamores
+agyago
+config
+mkdir
+init
+Git's
