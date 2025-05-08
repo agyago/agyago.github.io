@@ -4,7 +4,7 @@ description: Python Crash Course basics
 tags: python
 ---
 
-# BASICS
+BASICS
 **Problem Solving!**
 
 When I was starting, my initial thinking was to jump in to know the syntax and memorize all the things/gotcha that I should know in a programming/scripting language.
