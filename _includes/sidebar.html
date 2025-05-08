@@ -1,16 +1,42 @@
 <!-- Sidebar -->
-<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
-    <i class="fa fa-remove"></i>
+<aside class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar" aria-label="Main Navigation">
+  <a href="javascript:void(0)"
+     onclick="w3_close()"
+     class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large"
+     aria-label="Close navigation menu"> 
+    <i class="fa fa-remove" aria-hidden="true"></i> 
   </a>
-  <h4 class="w3-bar-item"><b></b></h4>
-  <a class="w3-bar-item w3-button w3-hover-black" href="/About">About</a>
-  <a class="w3-bar-item w3-button w3-hover-black" href="/notes">Notes</a>
-  <a class="w3-bar-item w3-button w3-hover-black" href="/gallery">Gallery</a>
-</nav>
+
+  <h4 class="w3-bar-item"><b>Menu</b></h4> 
+
+  <!-- Navigation Links -->
+  <a class="w3-bar-item w3-button w3-hover-black" href="{{ '/About/' | relative_url }}">About</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="{{ '/notes/' | relative_url }}">Notes</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="{{ '/gallery/' | relative_url }}">Gallery</a>
+
+
+ 
+  {% assign unique_sorted_tags = site.tags | map: first | sort_natural %}
+  {% if unique_sorted_tags.size > 0 %}
+    <div class="w3-bar-item sidebar-tags-section"> <!-- Add a class for potential styling -->
+      <hr> <!-- Visual separator -->
+      <h5>Tags</h5>
+      {% for tag_name in unique_sorted_tags %}
+        <a href="{{ '/tag/' | append: tag_name | slugify | relative_url }}/"
+           class="w3-bar-item w3-button w3-hover-black w3-small">
+          {{ tag_name }}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</aside>
 
 <!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-<div class="w3-main" style="margin-left:290px">
+<div class="w3-overlay w3-hide-large"
+     onclick="w3_close()"
+     style="cursor:pointer"
+     title="close side menu"
+     id="myOverlay"
+     tabindex="-1"
+     aria-hidden="true"> 
+</div>
