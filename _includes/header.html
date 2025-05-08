@@ -1,9 +1,22 @@
 <div class="w3-top">
-  <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
-    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
-    <a href= {{site.url}} class="w3-bar-item w3-button w3-theme-l1">cheezychinito</a>
+  <div class="w3-bar w3-theme w3-left-align w3-large">
+    <button
+      id="sidebar-toggle"
+      class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1"
+      onclick="w3_open()"
+      aria-label="Toggle navigation menu"
+      aria-controls="mySidebar"
+      aria-expanded="false"> 
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <!-- Site Title / Home Link -->
+    <a href="{{ '/' | relative_url }}" class="w3-bar-item w3-button w3-theme-l1">
+      {{ site.title | default: "cheezychinito" }}
+    </a>
   </div>
 </div>
-{% if site.tags != "" %}
-  {% include tags.html %}
+
+{% if site.tags and site.tags.size > 0 %}
+    {% include tags.html %}
 {% endif %}
