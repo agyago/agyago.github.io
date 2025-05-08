@@ -248,3 +248,31 @@ code.highlighter-rouge {
   border-radius: 3px;
   font-family: 'Courier New', Courier, monospace;
 }
+
+/* Responsive tables */
+table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+  border: 1px solid #555;
+}
+
+th, td {
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid #555;
+}
+
+th {
+  background-color: #444;
+}
+
+/* Mobile table styles - horizontal scrolling */
+@media screen and (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
