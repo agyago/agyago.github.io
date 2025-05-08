@@ -1,18 +1,18 @@
-{% assign rawtags = "" %}
-{% for post in site.posts %}
-  {% assign ttags = post.tags | join:'|' | append:'|' %}
-  {% assign rawtags = rawtags | append:ttags %}
-{% endfor %}
-{% assign rawtags = rawtags | split:'|' | sort %}
+{% assign unique_sorted_tags = site.tags | map: first | sort_natural %}
 
-{% assign site.tags = "" %}
-{% for tag in rawtags %}
-  {% if tag != "" %}
-    {% if tags == "" %}
-      {% assign tags = tag | split:'|' %}
-    {% endif %}
-    {% unless tags contains tag %}
-      {% assign tags = tags | join:'|' | append:'|' | append:tag | split:'|' %}
-    {% endunless %}
-  {% endif %}
-{% endfor %}
+{% if unique_sorted_tags.size > 0 %}
+  <div class="all-tags-list w3-padding">
+    <h4>Browse by Tag</h4> 
+    <p>
+      {% for tag_name in unique_sorted_tags %}
+        <a href="{{ '/tag/' | append: tag_name | slugify | relative_url }}/"
+           class="w3-tag w3-round w3-theme-d2 w3-margin-bottom"
+           style="text-decoration: none; margin-right: 5px;">
+          {{ tag_name }}
+        </a>
+      {% endfor %}
+    </p>
+  </div>
+{% else %}
+  <p><em>No tags found on this site yet.</em></p>
+{% endif %}
