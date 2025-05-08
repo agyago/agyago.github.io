@@ -6,6 +6,8 @@ OperatingSystem
 linux
 centOS
 bootable
+len
+Py
 cd
 usb
 MBR
