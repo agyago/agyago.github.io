@@ -4,7 +4,7 @@ description: Python Crash Course basics
 tags: python
 ---
 
-# BASICS
+BASICS
 **Problem Solving!**
 
 When I was starting, my initial thinking was to jump in to know the syntax and memorize all the things/gotcha that I should know in a programming/scripting language.
@@ -18,230 +18,145 @@ But I was wrong, first is to understand the problem that I need to solve. Of cou
 2. Root cause (if any)
 3. check if there is any workaround/alternatives or someone have solved it (if any)
 
-
-<p> Once the problem is understood:</p>
+Once the problem is understood:
 
 1. Draw it in a piece of paper. Think of a flow chart
 2. express it in words on how will the script work. (like a cookbook recipe)
 
-
 ---
 
-<p> With that here are the basics of Python. </p>
-  <dt> Data Types </dt>
-  <dd> String  - texts wrapped in quotation mark. e.g "One",'one',"Hello World" </dd>
-  <dd> Integer - whole numbers. e.g. 1,2,3,4,100,1000 </dd>
-  <dd> Float   - decimal numbers. e.g. 1.2, 3.5 </dd>
-  
-  NOTE: String and Integer can't be mixed together. It is a *TypeError*
-  
-   To check the datatype, use the function **type**
-  
+With that here are the basics of Python.
+
+## Python Data Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `int` | `5`, `-42` | Whole numbers |
+| `float` | `3.14`, `-0.5` | Decimal numbers |
+| `str` | `"hello"` | Text values |
+| `bool` | `True`, `False` | Boolean values |
+| `list` | `[1, 2, 3]` | Ordered, mutable collection |
+| `dict` | `{"a": 1}` | Key-value pairs |
+| `None` | `None` | Represents no value |
+
+## Variables
 ```python
->>> type("hello")
-<class 'str'>
->>> type(123)
-<class 'int'>
->>> type(3.2)
-<class 'float'>
+x = 10
+name = "Amy"
+pi = 3.14
 ```
 
-  <dt> Variables </dt>
-  <dd> Variables - name of containers for storing values. It can be any data type: String, Integer, Float..etc. 
-  Generally, variables can be named anything but the general rule is to not use the built-in python functions like print. 
-  It can't start with an Integer(SyntaxError). It cant also start with a space(IndentationError). Also 
-  variables are case sensitive</dd>
-  <dd> Assignment - stored value inside a variable </dd>
-  
- To show the variable assignment in python, use **print** function
-  
-  
+**Remember:** Variable names must start with a letter or underscore and cannot be Python keywords (like `if`, `for`).
+
+## Arithmetic Operations
+
+| Operation | Symbol | Example | Result |
+|-----------|--------|---------|--------|
+| Addition | `+` | `2 + 3` | `5` |
+| Subtraction | `-` | `5 - 2` | `3` |
+| Multiplication | `*` | `3 * 4` | `12` |
+| Division | `/` | `10 / 2` | `5.0` |
+| Modulus | `%` | `10 % 3` | `1` |
+| Exponent | `**` | `2 ** 3` | `8` |
+| Floor Division | `//` | `10 // 3` | `3` |
+
 ```python
->>> hello ="hello_world" #hello=variable;hello_world=assignment
->>>  hello="hi"
-  File "<stdin>", line 1
-    hello="hi"
-    ^
-IndentationError: unexpected indent
->>> 2hello="hi"
-  File "<stdin>", line 1
-    2hello="hi"
-     ^
-SyntaxError: invalid syntax
->>> print(hello)
-hello_world
-```
-  
-  
-  <dd> Integer Arithmetic operators </dd>
-  <dd> a + b = Adds a and b </dd>
-  <dd> a - b = Subtracts b from a </dd>
-  <dd> a * b = Multiplies a and b </dd>
-  <dd> a / b = Divides a by b (e.g 5/2 = 2.5) </dd>
-  <dd> a ** b = Elevates a to the power of b. For non integer values of b, this becomes a root (i.e. a**(1/2) is the square root of a) </dd>
-  <dd> a // b = The integer part of the integer division of a by b (e.g 5//2 = 2) </dd>
-  <dd> a % b = The remainder part of the integer division of a by b (e.g 5%2 = 1) </dd>
-  
-  ```python
->>> a=5
->>> b=2
->>> a+b
-7
->>> a-b
-3
->>> a*b
-10
->>> a/b
-2.5
->>> a**b
-25
->>> a//b
-2
->>> a%b
-1
+print(3 + 4)
+print(10 % 3)
+print(2 ** 4)
 ```
 
-  <dt> Conditionals </dt>
-  <dd> <b>Compare</b> </dd>
-  <dd> a == b: a is equal to b </dd>
-  <dd> a != b: a is different than b </dd>
-  <dd> a < b: a is smaller than b </dd>
-  <dd> a <= b: a is smaller or equal to b </dd>
-  <dd> a > b: a is bigger than b </dd>
-  <dd> a >= b: a is bigger or equal to b </dd>
-  <dd> <b>Logic operators</b> </dd>
-  <dd> a and b: True if both a and b are True. False otherwise. </dd>
-  <dd>  a or b: True if either a or b or both are True. False if both are False. </dd>
-  <dd> not a: True if a is False, False if a is True. </dd>
-  
-  ```python
->>> a=5
->>> b=2
->>> a==b
-False
->>> a!=b
-True
->>> a<5
-False
->>> a>b
-True
->>> a<=b
-False
->>> a>=b
-True
->>> True and True
-True
->>> False and True
-False
->>> True or True
-True
->>> False or False
-False
->>> True or False
-True
->>> not True
-False
->>> not False
-True
+**Remember:** Use `//` for integer division, and `/` for float division.
+
+## Strings
+```python
+name = "Alice"
+print("Hello, " + name)
+print(f"Hello, {name}")
+print("Length:", len(name))
+
+word = "Python"
+print(word[0])     # P
+print(word[-1])    # n
+print(word[0:2])   # Py
 ```
 
-  <dt> Branching conditionals </dt>
-  <dd> <b> if-elif-else block </b> </dd>
-  
-  ---
-  **REMEMBER**
-  
-  Indentation matters in Python
-  
-  ---
-  
-  ```python
-if condition1:
-	if-block
-elif condition2:
-	elif-block
+## Lists
+```python
+fruits = ["apple", "banana", "cherry"]
+print(fruits[1])         # banana
+fruits.append("date")    # add item
+fruits.remove("apple")   # remove item
+```
+
+**Remember:** Use `append()` to add, `pop()` to remove by index, or `remove()` by value.
+
+## Dictionaries
+```python
+person = {"name": "John", "age": 30}
+print(person["name"])
+person["age"] = 31
+person["job"] = "Engineer"
+```
+
+**Remember:** Keys must be unique. They're usually strings or numbers.
+
+## Conditionals
+```python
+age = 18
+if age >= 18:
+    print("Adult")
+elif age > 12:
+    print("Teenager")
 else:
-	else-block
-  
- # EXAMPLE1
-  
- age = 10
- if age < 18:
-    print('not considered adult')
- elif age < 35:
-    print('work hard and invest wisely')
- elif age >= 36:
-    print('reap benefits')
-  
-not considered adult
-  
- # EXAMPLE2
-  
-age,color=15,'yellow'
-if age <=30 and ( color == 'white' or color == 'yellow'):
-    print('still good')
-else:
-    print('spoiled')
- 
-spoiled
+    print("Child")
 ```
-  <dt> Loops </dt>
-  <dd> <b> While loops </b> </dd>
-  <dd> continuous loop/execute based on the value of a condition. It start by using while and semi colon and new line indentation, just like an if statement.
-  During looping initializing variables matters, check before running the program else you might encounter a NameError or worse endless loop.</dd>
-  
-  ```python
-  variable=assignment
-  while variable is True:
-     run code
-  ```
-  
-  <dd> <b> For loops </b> </dd>
-  <dd>  for loop can iterate over a sequence of values of any type, not just a range of numbers. Mostly used where there is a predefined sequence or range of numbers </dd>
-  
+
+**Remember:** Indentation is mandatory in Python. Use `and`, `or`, `not` for logic.
+
+## Boolean Logic
 ```python
-for variable in sequence
-    body
+is_raining = True
+is_cold = False
+
+if is_raining and not is_cold:
+    print("Take umbrella, no coat.")
 ```
 
-Range function - generates a sequence of integer numbers. e.g. range(5) - will count from 0 to 4 ; range(1,5) - count 1 to 4
+## None
+```python
+result = None
+if result is None:
+    print("No result yet.")
+```
 
----
-**REMEMBER**
-	
-for loops are best when you want to iterate over a known sequence of elements but when you want to operate while a certain condition is true, while loops are the best choice.
-	
----
+## Type Checking and Conversion
+```python
+x = "123"
+print(type(x))         # <class 'str'>
+y = int(x)
+print(type(y))         # <class 'int'>
+```
+
+## Final Tips
+- Use `type()` to check the data type.
+- Use `print()` to debug.
+- Explore with `dir()` and `help()`.
 
 ```python
->>> while count <=10:
-...   count+=1
-...   print(count)
-... 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
->>> for i in range(10):
-...   print(i)
-... 
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
->>> 
-
+print(dir(str))
+help(str.upper)
 ```
+
+## Quick Summary
+
+| Concept | Example | Notes |
+|---------|---------|-------|
+| Variable | `x = 5` | Dynamic typing |
+| String | `f"Hello, {name}"` | Use f-strings |
+| List | `append()` | Ordered, mutable |
+| Dict | `{"a": 1}` | Key-value store |
+| If-Else | `if age >= 18` | Use indentation |
+| Arithmetic | `**, //, %` | Power, floor division |
+| Boolean | `True / False` | Use `is` for `None` |
+
