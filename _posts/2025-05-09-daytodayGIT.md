@@ -1,6 +1,7 @@
 ---
 layout: post
-description: day to day usage of GIT
+title: Day to Day Usage of GIT
+description: GIT usage
 tags: git
 ---
 
