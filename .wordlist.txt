@@ -4,8 +4,14 @@ javascript
 helloworld
 OperatingSystem
 linux
+sb
+oneline
+configmap
+yaml
+env
 centOS
 bootable
+gitignore
 len
 Py
 cd
