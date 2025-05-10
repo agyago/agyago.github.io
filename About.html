@@ -21,81 +21,13 @@ permalink: About
   
   <div class="about-section">
     <h2>About Me</h2>
+    <p>Hey y'all</p>
+    <p>I am Aljay Gerard Yago.</p>
     <p>I've been a support/administrator/engineer for a decade now and I am comfortable with multiple OS(Linux/Windows). I have a keen interest on learning or exploring new things especially for system automation.</p>
-    
     <p>Occasionally I take photos too. I am into landscape photography and going to share them here as well.</p>
   </div>
   
   <div class="about-section">
-    <h2>Professional Experience</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3>Platform Engineer</h3>
-          <div class="timeline-info">
-            <span class="company">Health Catalyst</span>
-            <span class="period">2024 - Present</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3>Site Reliability Engineer</h3>
-          <div class="timeline-info">
-            <span class="company">Lumeon</span>
-            <span class="period">2022 - 2024</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3>System Engineer</h3>
-          <div class="timeline-info">
-            <span class="company">Twitter</span>
-            <span class="period">2019 - 2022</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3>System Analyst</h3>
-          <div class="timeline-info">
-            <span class="company">Nomura</span>
-            <span class="period">2013 - 2018</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3>Technical Consultant/Infrastructure Analyst</h3>
-          <div class="timeline-info">
-            <span class="company">HP</span>
-            <span class="period">2008 - 2013</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3>Earlier Roles</h3>
-          <div class="timeline-info">
-            <span class="period">2006 - 2008</span>
-          </div>
-          <p>Systems Engineer at P&G via HP (Philippines) and Systems Administrator at DataOne Asia (Philippines).</p>
-        </div>
-      </div>
-    </div>
-  </div>
   
   <div class="about-section">
     <h2>Professional Experience</h2>
@@ -278,63 +210,42 @@ permalink: About
   </div>
   
   <div class="about-section">
-    <h2>Soft Skills</h2>
-    <div class="soft-skills-container">
-      <div class="soft-skill">
-        <div class="soft-skill-icon">
-          <i class="fa fa-comments"></i>
-        </div>
-        <div class="soft-skill-content">
-          <h3>Communication</h3>
-        </div>
+  <h2>Soft Skills</h2>
+  <div class="soft-skills-simple">
+    <div class="soft-skills-row">
+      <div class="soft-skill-simple">
+        <i class="fa fa-comments soft-skill-icon"></i>
+        <span>Communication</span>
       </div>
-      
-      <div class="soft-skill">
-        <div class="soft-skill-icon">
-          <i class="fa fa-users"></i>
-        </div>
-        <div class="soft-skill-content">
-          <h3>Teamwork</h3>
-        </div>
+      <div class="soft-skill-simple">
+        <i class="fa fa-tasks soft-skill-icon"></i>
+        <span>Project Management</span>
       </div>
-      
-      <div class="soft-skill">
-        <div class="soft-skill-icon">
-          <i class="fa fa-lightbulb-o"></i>
-        </div>
-        <div class="soft-skill-content">
-          <h3>Problem Solving</h3>
-        </div>
+    </div>
+    
+    <div class="soft-skills-row">
+      <div class="soft-skill-simple">
+        <i class="fa fa-users soft-skill-icon"></i>
+        <span>Teamwork</span>
       </div>
-      
-      <div class="soft-skill">
-        <div class="soft-skill-icon">
-          <i class="fa fa-tasks"></i>
-        </div>
-        <div class="soft-skill-content">
-          <h3>Project Management</h3>
-        </div>
+      <div class="soft-skill-simple">
+        <i class="fa fa-clock-o soft-skill-icon"></i>
+        <span>Time Management</span>
       </div>
-      
-      <div class="soft-skill">
-        <div class="soft-skill-icon">
-          <i class="fa fa-clock-o"></i>
-        </div>
-        <div class="soft-skill-content">
-          <h3>Time Management</h3>
-        </div>
+    </div>
+    
+    <div class="soft-skills-row">
+      <div class="soft-skill-simple">
+        <i class="fa fa-lightbulb-o soft-skill-icon"></i>
+        <span>Problem Solving</span>
       </div>
-      
-      <div class="soft-skill">
-        <div class="soft-skill-icon">
-          <i class="fa fa-book"></i>
-        </div>
-        <div class="soft-skill-content">
-          <h3>Continuous Learning</h3>
-        </div>
+      <div class="soft-skill-simple">
+        <i class="fa fa-book soft-skill-icon"></i>
+        <span>Continuous Learning</span>
       </div>
     </div>
   </div>
+</div>
 </div>
   
 
@@ -565,4 +476,49 @@ permalink: About
     height: 150px;
   }
 }
+  
+/* New Soft Skills Styles */
+.soft-skills-simple {
+  margin-top: 20px;
+}
+
+.soft-skills-row {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.soft-skill-simple {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+
+.soft-skill-icon {
+  color: #0078ff;
+  font-size: 20px;
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+.soft-skill-simple span {
+  font-size: 1.1rem;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 500px) {
+  .soft-skills-row {
+    flex-direction: column;
+  }
+  
+  .soft-skill-simple {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .soft-skills-row:last-child .soft-skill-simple:last-child {
+    margin-bottom: 0;
+  }
+}
+</style>
 </style>
