@@ -1,124 +1,213 @@
 ---
 layout: defaults
-permalink: About
+permalink: About # Changed to a more standard permalink
+title: About Aljay Gerard Yago # Added a title for SEO and browser tab
 ---
-<center>
-    <h2>About</h2>
-    <img src="image/aljay.jpg" class="w3-margin w3-circle" alt="Person" style="width: 25%"/>
-    <p>Hey y'all</p>
-    <p>I am Aljay Gerard Yago. </p>
-    <p>I&apos;ve been a support/administrator/engineer for a decade now and I am comfortable with multiple OS(Linux/Windows)<br/>I have a keen interest on learning or exploring new things especially for system automation.</p>
-    <p>I do take notes of what I&apos;ve learned but I am misplacing all my notes. <br/>Git help me document stuff but building this &apos;blog&apos; will also aid me remember things while I explain 
-        or document here.</p>
-    <p>Occasionally I take photos too. I am into landscape photography and going to share them here as well.</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-</center>
-<div class="w3-row">
-    <div class="w3-half w3-grey w3-container" style="min-height:830px">
-        <div class="w3-padding-64 w3-center">
-            <h2>Snapshot of my experience</h2><br/>
-            <div class="w3-container w3-responsive">
-                <table class="w3-table">
-                    <tr>
-                        <th>Year</th>
-                        <th>Title</th>
-                        <th>Where</th>
-                    </tr>
-                    <tr class="w3-white">
-                        <td>2019-Present</td>
-                        <td>System Engineer at Twitter</td>
-                        <td>Singapore/United Kingdom</td>
-                    </tr>
-                    <tr>
-                        <td>2013-2018</td>
-                        <td>System Analyst at Nomura</td>
-                        <td>Singapore</td>
-                    </tr>
-                    <tr class="w3-white">
-                        <td>2008-2013</td>
-                        <td>Technical Consultant/Infrastructure Analyst at HP</td>
-                        <td>Philippines/Singapore</td>
-                    </tr>
-                    <tr>
-                        <td>2007-2008</td>
-                        <td>Systems Engineer at P&G via HP</td>
-                        <td>Philippines</td>
-                    </tr>
-                    <tr class="w3-white">
-                        <td>2006-2007</td>
-                        <td>Systems Administrator at DataOne Asia</td>
-                        <td>Philippines</td>
-                    </tr>
-                    <tr class="w3-hide-medium">
-                        <td>2002-2006</td>
-                        <td>B.S Information Technology</td>
-                        <td>Mapua Institute of Technology</td>
-                    </tr>
-                </table>
+<div class="about-page-container"> {# Wrapped in a main container for easier styling #}
+    <div class="w3-center w3-padding-large"> {# Replaced <center> with W3.CSS classes #}
+        <h2>About</h2>
+        <img src="{{ 'image/aljay.jpg' | relative_url }}" class="w3-margin w3-circle" alt="Profile picture of Aljay Gerard Yago" style="width:200px; max-width:40%;"/> {# Used relative_url, improved alt, adjusted style #}
+        <p>Hey y'all,</p>
+        <p>I am Aljay Gerard Yago.</p>
+        <p>I've been a support/administrator/engineer for over a decade now, and I am comfortable with multiple OS environments (Linux/Windows).<br/>I have a keen interest in learning and exploring new technologies, especially those related to system automation.</p>
+        <p>I often take notes of what I've learned, but I tend to misplace them. <br/>While Git helps me document technical details, building this 'blog' will also aid me in remembering things as I explain or document them here.</p>
+        <p>Occasionally, I take photos too. I am into landscape photography and plan to share some of them here as well.</p>
+    </div>
+
+    <div class="w3-row-padding"> {# Added w3-row-padding for spacing between columns #}
+        <div class="w3-half">
+            <div class="w3-card-4 w3-margin-bottom"> {# Wrapped in a card for better visual separation #}
+                <header class="w3-container w3-theme">
+                    <h3>Snapshot of My Experience</h3>
+                </header>
+                <div class="w3-container w3-padding">
+                    <div class="w3-responsive">
+                        <table class="w3-table-all w3-striped"> {# Used w3-table-all for borders & w3-striped #}
+                            <thead>
+                                <tr class="w3-theme-d4">
+                                    <th>Year</th>
+                                    <th>Title</th>
+                                    <th>Company</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-Present</td>
+                                    <td>Platform Engineer</td>
+                                    <td>HealthCatalyst</td>
+                                    <td>{# Add location if available #}</td>
+                                </tr>
+                                <tr>
+                                    <td>2022-2024</td>
+                                    <td>Site Reliability Engineer (SRE)</td>
+                                    <td>Lumeon</td>
+                                    <td>{# Add location if available #}</td>
+                                </tr>
+                                <tr>
+                                    <td>2019-2022</td>
+                                    <td>System Engineer</td>
+                                    <td>Twitter</td>
+                                    <td>Singapore/United Kingdom</td>
+                                </tr>
+                                <tr>
+                                    <td>2013-2018</td>
+                                    <td>System Analyst</td>
+                                    <td>Nomura</td>
+                                    <td>Singapore</td>
+                                </tr>
+                                <tr>
+                                    <td>2008-2013</td>
+                                    <td>Technical Consultant/Infrastructure Analyst</td>
+                                    <td>HP</td>
+                                    <td>Philippines/Singapore</td>
+                                </tr>
+                                <tr>
+                                    <td>2007-2008</td>
+                                    <td>Systems Engineer</td>
+                                    <td>P&G (via HP)</td>
+                                    <td>Philippines</td>
+                                </tr>
+                                <tr>
+                                    <td>2006-2007</td>
+                                    <td>Systems Administrator</td>
+                                    <td>DataOne Asia</td>
+                                    <td>Philippines</td>
+                                </tr>
+                                <tr class="w3-hide-small"> {# Hide on small screens if too much info #}
+                                    <td>2002-2006</td>
+                                    <td colspan="2">B.S Information Technology</td>
+                                    <td>Mapua Institute of Technology</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="w3-half w3-blue-grey w3-container" style="min-height:800px" id="work">
-        <div class="w3-padding-64">
-            <h2>Skills</h2>
-            Linux OS(RedHat/Debian)
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:80%">80%</div>
-            </div>
-            Windows OS (Server/Client)
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:75%">75%</div>
-            </div>
-            Ansible
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:65%">65%</div>
-            </div>
-            Puppet
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:70%">70%</div>
-            </div>
-            Terraform
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:60%">60%</div>
-            </div>
-            Powershell/Bash
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:50%">50%</div>
-            </div>
-            Python3
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:55%">55%</div>
-            </div>
-            Azure
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:60%">60%</div>
-            </div>
-            AWS
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:50%">50%</div>
-            </div>
-            Docker
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:60%">60%</div>
-            </div>
-            Nginx/Apache
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:55%">55%</div>
-            </div>
-            Communication (writing/speaking)
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:90%">90%</div>
-            </div>
-            Team player
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:100%">100%</div>
-            </div>
-            Fast Learner / Adaptable
-            <div class="w3-container">
-                <div class="w3-container w3-round-xlarge w3-green w3-center" style="width:90%">90%</div>
+
+        <div class="w3-half">
+            <div class="w3-card-4">  {# Wrapped in a card #}
+                <header class="w3-container w3-theme">
+                    <h3>Skills</h3>
+                </header>
+                <div class="w3-container w3-padding skills-container"> {# Added class for easier styling #}
+                    <div class="skill-item">
+                        <p>Linux OS (RedHat/Debian)</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:80%">80%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>AWS</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:80%">80%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Terraform</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:70%">70%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Windows OS (Server/Client)</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:75%">75%</div>
+                        </div>
+                    </div>
+                     <div class="skill-item">
+                        <p>Ansible</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:65%">65%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Puppet</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:70%">70%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Azure</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:60%">60%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Docker</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:60%">60%</div>
+                        </div>
+                    </div>
+                     <div class="skill-item">
+                        <p>Kubernetes</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:50%">50%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Python3</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:55%">55%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Powershell/Bash</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:50%">50%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Nginx/Apache</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:55%">55%</div>
+                        </div>
+                    </div>
+                    <hr/> {# Separator for soft skills #}
+                    <div class="skill-item">
+                        <p>Communication (writing/speaking)</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:90%">90%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Team player</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:100%">100%</div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <p>Fast Learner / Adaptable</p>
+                        <div class="w3-light-grey w3-round-xlarge">
+                            <div class="w3-container w3-round-xlarge w3-theme-d1 w3-center skill-bar" style="width:90%">90%</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+/* Add this to your main.css or in a <style> tag in this file if preferred (for page-specific styles) */
+.about-page-container {
+    padding-bottom: 30px; /* Add some space at the bottom */
+}
+
+.skills-container .skill-item {
+    margin-bottom: 12px;
+}
+
+.skills-container .skill-item p {
+    margin-bottom: 4px; /* Space between skill name and bar */
+    font-weight: 500;
+}
+.skill-bar {
+    line-height: 1.8; /* Vertically center text in bar if needed */
+}
+/* Optional: to ensure the fixed min-height from W3.CSS isn't an issue and cards can grow */
+.w3-half .w3-card-4 {
+    min-height: 0; 
+}
+</style>
