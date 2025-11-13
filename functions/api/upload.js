@@ -159,7 +159,13 @@ export async function onRequestPost({ request, env }) {
     // Process each file
     for (const file of files) {
       try {
-        const filename = file.name;
+        // Log file details for debugging
+        const filename = file?.name || 'unnamed';
+        const fileType = file?.type || 'unknown';
+        const fileSize = file?.size || 0;
+
+        console.log(`Processing file: ${filename}, type: ${fileType}, size: ${fileSize}`);
+
         validateFile(file, filename);
 
         // Convert file to base64
@@ -183,7 +189,12 @@ export async function onRequestPost({ request, env }) {
 
         results.push({ filename, status: 'success' });
       } catch (error) {
-        errors.push({ filename: file.name, error: error.message });
+        console.error(`Error processing file:`, error);
+        errors.push({
+          filename: file?.name || 'unknown',
+          error: error.message || String(error),
+          stack: error.stack
+        });
       }
     }
 
