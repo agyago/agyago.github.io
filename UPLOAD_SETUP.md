@@ -148,7 +148,7 @@ Copy the generated string.
 ### From iPhone:
 
 1. Open `agyago.github.io/upload` in Safari/Chrome
-2. Login once (stays logged in for 90 days)
+2. Login once (stays logged in for 30 days)
 3. Select photos
 4. Upload!
 5. Check gallery in ~1 minute
@@ -189,7 +189,7 @@ Live Gallery Updated! 🎉
 - Try regenerating the OAuth app client secret and updating Cloudflare
 
 ### Session expires too quickly
-- Sessions last 90 days by default
+- Sessions last 30 days by default
 - Check browser isn't clearing cookies
 - Try using Safari instead of Chrome (better cookie handling on iOS)
 
@@ -236,7 +236,7 @@ if (!allowedUsernames.includes(userData.login)) {
 
 ## 🔄 Maintenance
 
-### Rotate GitHub Token (Recommended every 90 days)
+### Rotate GitHub Token (Recommended every 30-90 days)
 
 1. Generate new token: https://github.com/settings/tokens
 2. Update `GITHUB_TOKEN` in Cloudflare Pages

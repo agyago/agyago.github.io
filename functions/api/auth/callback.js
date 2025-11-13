@@ -7,7 +7,7 @@
 async function createSessionToken(username, secret) {
   const payload = {
     username: username,
-    exp: Date.now() + (90 * 24 * 60 * 60 * 1000) // 90 days
+    exp: Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
   };
 
   const encoder = new TextEncoder();
@@ -103,7 +103,7 @@ export async function onRequest({ request, env }) {
       status: 302,
       headers: {
         'Location': '/upload.html',
-        'Set-Cookie': `session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${90 * 24 * 60 * 60}`
+        'Set-Cookie': `session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60}`
       }
     });
 
