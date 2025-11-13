@@ -363,36 +363,37 @@ layout: defaults
             uploadBtn.disabled = true;
             uploadBtn.innerHTML = '<span class="loading"></span> Uploading...';
 
-            // Debug: Log file details before upload
-            console.log('=== CLIENT: Files being uploaded ===');
-            selectedFiles.forEach((file, i) => {
-                console.log(`File ${i}:`, {
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                    lastModified: file.lastModified,
-                    constructor: file.constructor.name
-                });
-            });
-
-            const formData = new FormData();
-            selectedFiles.forEach((file, i) => {
-                console.log(`Adding file ${i} to FormData:`, file.name, file.size);
-                formData.append('files', file);
-            });
-
-            // Debug: Check FormData contents
-            console.log('FormData entries:', Array.from(formData.entries()).map(([key, value]) => ({
-                key,
-                valueName: value.name,
-                valueSize: value.size,
-                valueType: value.type
-            })));
-
             try {
+                // Convert files to base64 for JSON upload
+                console.log('=== Converting files to base64 ===');
+                const filesData = await Promise.all(
+                    selectedFiles.map(async (file) => {
+                        return new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                                const base64 = reader.result.split(',')[1]; // Remove data:image/jpeg;base64, prefix
+                                console.log(`Converted ${file.name}: ${file.size} bytes -> ${base64.length} chars base64`);
+                                resolve({
+                                    name: file.name,
+                                    type: file.type,
+                                    size: file.size,
+                                    data: base64
+                                });
+                            };
+                            reader.onerror = () => reject(new Error(`Failed to read ${file.name}`));
+                            reader.readAsDataURL(file);
+                        });
+                    })
+                );
+
+                console.log(`Uploading ${filesData.length} files as JSON`);
+
                 const response = await fetch('/api/upload', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ files: filesData })
                 });
 
                 if (!response.ok) {
