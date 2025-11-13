@@ -85,7 +85,7 @@ async function uploadToGitHub(filename, content, githubToken, repoOwner, repoNam
 // Validate file
 function validateFile(file, filename) {
   const maxSize = 20 * 1024 * 1024; // 20MB
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/'];
   const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'];
 
   // Check filename exists
@@ -94,15 +94,21 @@ function validateFile(file, filename) {
   }
 
   // Check size
+  if (!file || !file.size) {
+    throw new Error(`File ${filename} has no size data`);
+  }
+
   if (file.size > maxSize) {
     throw new Error(`File ${filename} is too large. Max size is 20MB.`);
   }
 
-  // Check type
+  // Check type - be more lenient if we have a generated filename
   const fileType = file.type ? file.type.toLowerCase() : '';
-  if (!allowedTypes.includes(fileType) &&
-      !allowedExtensions.some(ext => filename.toLowerCase().endsWith(ext))) {
-    throw new Error(`File ${filename} is not a supported image type.`);
+  const hasValidExtension = allowedExtensions.some(ext => filename.toLowerCase().endsWith(ext));
+  const hasValidType = fileType && (allowedTypes.includes(fileType) || fileType.startsWith('image/'));
+
+  if (!hasValidType && !hasValidExtension) {
+    throw new Error(`File ${filename} is not a supported image type. Type: ${fileType}`);
   }
 
   // Check filename for malicious patterns
@@ -138,6 +144,14 @@ export async function onRequestPost({ request, env }) {
     const formData = await request.formData();
     const files = formData.getAll('files');
 
+    console.log(`Received ${files.length} files`);
+    console.log('Files data:', files.map(f => ({
+      name: f.name,
+      type: f.type,
+      size: f.size,
+      constructor: f.constructor.name
+    })));
+
     if (files.length === 0) {
       return new Response('No files uploaded', { status: 400 });
     }
@@ -157,14 +171,23 @@ export async function onRequestPost({ request, env }) {
     const errors = [];
 
     // Process each file
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       try {
-        // Log file details for debugging
-        const filename = file?.name || 'unnamed';
+        // Extract filename - handle different scenarios
+        let filename = file?.name || file?.fileName || '';
+
+        // If still no filename, generate one based on type or index
+        if (!filename || filename === '') {
+          const extension = file?.type ? file.type.split('/')[1] || 'jpg' : 'jpg';
+          filename = `photo_${Date.now()}_${i}.${extension}`;
+          console.log(`Generated filename: ${filename}`);
+        }
+
         const fileType = file?.type || 'unknown';
         const fileSize = file?.size || 0;
 
-        console.log(`Processing file: ${filename}, type: ${fileType}, size: ${fileSize}`);
+        console.log(`Processing file ${i}: ${filename}, type: ${fileType}, size: ${fileSize}`);
 
         validateFile(file, filename);
 
