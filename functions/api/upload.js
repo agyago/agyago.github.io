@@ -94,7 +94,8 @@ function validateFile(file, filename) {
   }
 
   // Check type
-  if (!allowedTypes.includes(file.type.toLowerCase()) &&
+  const fileType = file.type ? file.type.toLowerCase() : '';
+  if (!allowedTypes.includes(fileType) &&
       !allowedExtensions.some(ext => filename.toLowerCase().endsWith(ext))) {
     throw new Error(`File ${filename} is not a supported image type.`);
   }
