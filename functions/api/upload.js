@@ -88,6 +88,11 @@ function validateFile(file, filename) {
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
   const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'];
 
+  // Check filename exists
+  if (!filename) {
+    throw new Error('File has no name');
+  }
+
   // Check size
   if (file.size > maxSize) {
     throw new Error(`File ${filename} is too large. Max size is 20MB.`);
@@ -154,7 +159,13 @@ export async function onRequestPost({ request, env }) {
     // Process each file
     for (const file of files) {
       try {
-        const filename = file.name;
+        // Log file details for debugging
+        const filename = file?.name || 'unnamed';
+        const fileType = file?.type || 'unknown';
+        const fileSize = file?.size || 0;
+
+        console.log(`Processing file: ${filename}, type: ${fileType}, size: ${fileSize}`);
+
         validateFile(file, filename);
 
         // Convert file to base64
@@ -178,7 +189,12 @@ export async function onRequestPost({ request, env }) {
 
         results.push({ filename, status: 'success' });
       } catch (error) {
-        errors.push({ filename: file.name, error: error.message });
+        console.error(`Error processing file:`, error);
+        errors.push({
+          filename: file?.name || 'unknown',
+          error: error.message || String(error),
+          stack: error.stack
+        });
       }
     }
 
