@@ -140,16 +140,21 @@ export async function onRequestPost({ request, env }) {
       return new Response('Forbidden', { status: 403 });
     }
 
-    // Parse multipart form data
-    const formData = await request.formData();
-    const files = formData.getAll('files');
+    // Parse JSON payload (files sent as base64)
+    const contentType = request.headers.get('Content-Type') || '';
+    if (!contentType.includes('application/json')) {
+      return new Response('Content-Type must be application/json', { status: 400 });
+    }
 
-    console.log(`Received ${files.length} files`);
+    const payload = await request.json();
+    const files = payload.files || [];
+
+    console.log(`Received ${files.length} files via JSON`);
     console.log('Files data:', files.map(f => ({
       name: f.name,
       type: f.type,
       size: f.size,
-      constructor: f.constructor.name
+      dataLength: f.data?.length || 0
     })));
 
     if (files.length === 0) {
@@ -172,35 +177,25 @@ export async function onRequestPost({ request, env }) {
 
     // Process each file
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+      const fileData = files[i];
       try {
-        // Extract filename - handle different scenarios
-        let filename = file?.name || file?.fileName || '';
+        const filename = fileData.name || `photo_${Date.now()}_${i}.jpg`;
+        const fileType = fileData.type || 'image/jpeg';
+        const fileSize = fileData.size || 0;
+        const base64Content = fileData.data;
 
-        // If still no filename, generate one based on type or index
-        if (!filename || filename === '') {
-          const extension = file?.type ? file.type.split('/')[1] || 'jpg' : 'jpg';
-          filename = `photo_${Date.now()}_${i}.${extension}`;
-          console.log(`Generated filename: ${filename}`);
+        console.log(`Processing file ${i}: ${filename}, type: ${fileType}, size: ${fileSize}, base64 length: ${base64Content?.length || 0}`);
+
+        // Validate
+        if (!base64Content || base64Content.length === 0) {
+          throw new Error(`File ${filename} has no data`);
         }
 
-        const fileType = file?.type || 'unknown';
-        const fileSize = file?.size || 0;
+        if (fileSize > 20 * 1024 * 1024) {
+          throw new Error(`File ${filename} is too large. Max size is 20MB.`);
+        }
 
-        console.log(`Processing file ${i}: ${filename}, type: ${fileType}, size: ${fileSize}`);
-
-        validateFile(file, filename);
-
-        // Convert file to base64
-        const arrayBuffer = await file.arrayBuffer();
-        const base64Content = btoa(
-          new Uint8Array(arrayBuffer).reduce(
-            (data, byte) => data + String.fromCharCode(byte),
-            ''
-          )
-        );
-
-        // Upload to GitHub
+        // Upload to GitHub (base64Content is already base64 encoded)
         await uploadToGitHub(
           filename,
           base64Content,
@@ -214,7 +209,7 @@ export async function onRequestPost({ request, env }) {
       } catch (error) {
         console.error(`Error processing file:`, error);
         errors.push({
-          filename: file?.name || 'unknown',
+          filename: fileData?.name || 'unknown',
           error: error.message || String(error),
           stack: error.stack
         });
