@@ -88,6 +88,11 @@ function validateFile(file, filename) {
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
   const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'];
 
+  // Check filename exists
+  if (!filename) {
+    throw new Error('File has no name');
+  }
+
   // Check size
   if (file.size > maxSize) {
     throw new Error(`File ${filename} is too large. Max size is 20MB.`);
