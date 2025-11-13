@@ -1,0 +1,156 @@
+name: Optimize Uploaded Images
+
+on:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    paths:
+      - 'uploads/**'
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit to detect changes
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install image optimization tools
+        run: |
+          npm install -g sharp-cli @squoosh/cli
+          sudo apt-get update
+          sudo apt-get install -y webp
+
+      - name: Detect changed images
+        id: changed-files
+        run: |
+          git diff --name-only HEAD~1 HEAD -- uploads/ | grep -E '\.(jpg|jpeg|png|webp|heic)$' > changed_images.txt || true
+          if [ -s changed_images.txt ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changed images:"
+            cat changed_images.txt
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No new images to optimize"
+          fi
+
+      - name: Optimize images
+        if: steps.changed-files.outputs.has_changes == 'true'
+        run: |
+          mkdir -p uploads/optimized
+
+          while IFS= read -r filepath; do
+            if [ -f "$filepath" ]; then
+              filename=$(basename "$filepath")
+              extension="${filename##*.}"
+              basename="${filename%.*}"
+
+              echo "Processing: $filename"
+
+              # Get original size
+              original_size=$(stat -f%z "$filepath" 2>/dev/null || stat -c%s "$filepath")
+
+              # Optimize based on file type
+              case "${extension,,}" in
+                jpg|jpeg)
+                  # Resize if larger than 2000px width and compress
+                  sharp-cli resize 2000 --input "$filepath" --output "uploads/optimized/${basename}_temp.jpg" --fit inside --withoutEnlargement || cp "$filepath" "uploads/optimized/${basename}_temp.jpg"
+
+                  # Compress JPEG (85% quality)
+                  sharp-cli jpeg "uploads/optimized/${basename}_temp.jpg" --quality 85 --progressive --output "uploads/optimized/${filename}"
+                  rm "uploads/optimized/${basename}_temp.jpg"
+
+                  # Also create WebP version
+                  cwebp -q 85 "uploads/optimized/${filename}" -o "uploads/optimized/${basename}.webp"
+                  ;;
+
+                png)
+                  # Resize if needed
+                  sharp-cli resize 2000 --input "$filepath" --output "uploads/optimized/${basename}_temp.png" --fit inside --withoutEnlargement || cp "$filepath" "uploads/optimized/${basename}_temp.png"
+
+                  # Compress PNG
+                  sharp-cli png "uploads/optimized/${basename}_temp.png" --compressionLevel 9 --progressive --output "uploads/optimized/${filename}"
+                  rm "uploads/optimized/${basename}_temp.png"
+
+                  # Create WebP version
+                  cwebp -q 85 "uploads/optimized/${filename}" -o "uploads/optimized/${basename}.webp"
+                  ;;
+
+                webp)
+                  # Resize if needed
+                  sharp-cli resize 2000 --input "$filepath" --output "uploads/optimized/${filename}" --fit inside --withoutEnlargement || cp "$filepath" "uploads/optimized/${filename}"
+                  ;;
+
+                heic)
+                  # Convert HEIC to JPEG and WebP
+                  sharp-cli resize 2000 --input "$filepath" --output "uploads/optimized/${basename}.jpg" --fit inside --withoutEnlargement --format jpeg --quality 85
+                  cwebp -q 85 "uploads/optimized/${basename}.jpg" -o "uploads/optimized/${basename}.webp"
+                  ;;
+              esac
+
+              # Replace original with optimized version
+              if [ -f "uploads/optimized/${filename}" ]; then
+                optimized_size=$(stat -f%z "uploads/optimized/${filename}" 2>/dev/null || stat -c%s "uploads/optimized/${filename}")
+                savings=$(( (original_size - optimized_size) * 100 / original_size ))
+
+                echo "Original: $(numfmt --to=iec-i --suffix=B $original_size) | Optimized: $(numfmt --to=iec-i --suffix=B $optimized_size) | Saved: ${savings}%"
+
+                mv "uploads/optimized/${filename}" "$filepath"
+              fi
+
+              # Move WebP versions to uploads
+              if [ -f "uploads/optimized/${basename}.webp" ]; then
+                mv "uploads/optimized/${basename}.webp" "uploads/${basename}.webp"
+              fi
+            fi
+          done < changed_images.txt
+
+          # Cleanup
+          rm -rf uploads/optimized
+          rm changed_images.txt
+
+      - name: Commit optimized images
+        if: steps.changed-files.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add uploads/
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No optimization changes to commit"
+          else
+            git commit -m "🖼️ Optimize uploaded images
+
+          - Resize large images (max 2000px width)
+          - Compress JPEG/PNG
+          - Generate WebP versions
+          - Automated by GitHub Actions"
+
+            git push
+          fi
+
+      - name: Optimization Summary
+        if: steps.changed-files.outputs.has_changes == 'true'
+        run: |
+          echo "✅ Image optimization complete!"
+          echo "📊 Summary:"
+          echo "  - Resized images larger than 2000px"
+          echo "  - Compressed JPEG (85% quality)"
+          echo "  - Compressed PNG (level 9)"
+          echo "  - Generated WebP versions for better performance"
+          echo ""
+          echo "🌐 Your gallery will be updated shortly!"
