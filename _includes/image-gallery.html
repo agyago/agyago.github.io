@@ -3,6 +3,7 @@
   <!-- Ensure these paths are correct for your project structure -->
   <script type="text/javascript" src="{{ '/js/lightbox.js' | relative_url }}"></script>
   <link rel="stylesheet" href="{{ '/css/lightbox.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/css/comments.css' | relative_url }}">
 
   <ul class="image-gallery">
       {% for file in site.static_files %}
@@ -12,7 +13,7 @@
             {% assign filename_from_path = file.path | split: '/' | last %}
             {% assign filename_clean = filename_frompath | remove: file.extname | replace: '-', ' ' | replace: '', ' ' | capitalize %}
 
-            <li>
+            <li class="gallery-item">
               <a href="{{ file.path | relative_url }}"
                  title="{{ filename_clean }}"
                  data-lightbox="gallery-{{ include.folder | slugify | default: 'default' }}"
@@ -20,11 +21,32 @@
                 <img src="//images.weserv.nl/?url={{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ file.path | relative_url }}&w=300&h=300&output=jpg&q=50&t=square"
                      alt="Image: {{ filename_clean }}" />
               </a>
+
+              <!-- Comments Section -->
+              <div class="photo-comments" data-photo="{{ filename_from_path }}">
+                <div class="comments-toggle" onclick="toggleComments('{{ filename_from_path }}')">
+                  💬 <span class="comment-count">0</span> comments
+                </div>
+
+                <div class="comments-content" id="comments-{{ filename_from_path | replace: '.', '-' }}" style="display:none;">
+                  <div class="comments-list"></div>
+
+                  <div class="comment-form">
+                    <h4>Add a comment</h4>
+                    <input type="text" placeholder="Your name (optional)" class="comment-author" maxlength="50">
+                    <textarea placeholder="Write your comment..." class="comment-text" maxlength="1000" rows="3"></textarea>
+                    <button onclick="postComment('{{ filename_from_path }}')">Post Comment</button>
+                    <div class="comment-status"></div>
+                  </div>
+                </div>
+              </div>
             </li>
           {% endif %}
        {% endif %}
       {% endfor %}
   </ul>
+
+  <script src="{{ '/js/comments.js' | relative_url }}"></script>
 {% else %}
   <p><em>Image gallery folder not specified or is empty. Usage: {% raw %}{% include image-gallery.html folder="/path/to/your/images/" %}{% endraw %}</em></p>
 {% endif %}
