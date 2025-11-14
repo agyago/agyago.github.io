@@ -1,32 +1,32 @@
--- Photo Comments Database Schema for Cloudflare D1
+-- Photo Likes Database Schema for Cloudflare D1
 
--- Comments table
-CREATE TABLE IF NOT EXISTS comments (
+-- Likes table (simple!)
+CREATE TABLE IF NOT EXISTS likes (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   photo_name TEXT NOT NULL,
-  author_name TEXT,
-  comment_text TEXT NOT NULL,
+  ip_hash TEXT NOT NULL,
   created_at INTEGER NOT NULL,
-  ip_hash TEXT,
-  user_agent TEXT
+  UNIQUE(photo_name, ip_hash)  -- One like per IP per photo
 );
 
 -- Index for fast photo lookups
-CREATE INDEX IF NOT EXISTS idx_photo_name ON comments(photo_name);
+CREATE INDEX IF NOT EXISTS idx_photo_name ON likes(photo_name);
 
--- Index for chronological sorting
-CREATE INDEX IF NOT EXISTS idx_created_at ON comments(created_at DESC);
+-- Index for IP checking (prevent duplicates)
+CREATE INDEX IF NOT EXISTS idx_ip_hash ON likes(ip_hash);
 
--- Sample query examples:
--- Get all comments for a photo:
--- SELECT * FROM comments WHERE photo_name = 'IMG_0162.jpg' ORDER BY created_at DESC;
+-- Sample queries:
+-- Get like count for a photo:
+-- SELECT COUNT(*) as count FROM likes WHERE photo_name = 'IMG_0162.jpg';
 
--- Add a comment:
--- INSERT INTO comments (photo_name, author_name, comment_text, created_at, ip_hash)
--- VALUES ('IMG_0162.jpg', 'John', 'Great photo!', 1700000000000, 'hash123');
+-- Add a like:
+-- INSERT OR IGNORE INTO likes (photo_name, ip_hash, created_at) VALUES ('IMG_0162.jpg', 'hash123', 1700000000000);
 
--- Delete a comment (admin only):
--- DELETE FROM comments WHERE id = 1;
+-- Remove a like (unlike):
+-- DELETE FROM likes WHERE photo_name = 'IMG_0162.jpg' AND ip_hash = 'hash123';
 
--- Get comment count per photo:
--- SELECT photo_name, COUNT(*) as count FROM comments GROUP BY photo_name;
+-- Get all like counts:
+-- SELECT photo_name, COUNT(*) as count FROM likes GROUP BY photo_name;
+
+-- Check if IP already liked a photo:
+-- SELECT COUNT(*) as liked FROM likes WHERE photo_name = 'IMG_0162.jpg' AND ip_hash = 'hash123';
