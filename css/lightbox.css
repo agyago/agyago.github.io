@@ -128,7 +128,7 @@ transform-origin: 50% 50%;
     transform: scale(0.95);
 }
 
-/* HTML/Unicode heart styling - we control the color with CSS */
+/* Emoji heart styling - emoji hearts are already colored */
 /* Override the #lightbox span {display: none;} rule */
 .lightbox-likes .like-button .heart {
     font-size: 14px !important;
@@ -138,12 +138,9 @@ transform-origin: 50% 50%;
     position: static !important;
     width: auto !important;
     height: auto !important;
-    color: #262626 !important;  /* Dark heart on white button */
-    font-weight: normal;
 }
 
 .lightbox-likes .like-button.liked .heart {
-    color: #ed4956 !important;  /* Red heart when liked */
     animation: likeAnimation 0.4s ease-in-out;
 }
 

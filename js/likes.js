@@ -20,10 +20,12 @@ async function loadLikeStatus(photoName, likeDiv) {
     // Update count
     countSpan.textContent = data.count;
 
-    // Update heart color via CSS class (heart stays ♥, color changes)
+    // Update heart emoji based on liked status
     if (data.liked) {
+      heart.textContent = '❤️'; // Red heart emoji
       button.classList.add('liked');
     } else {
+      heart.textContent = '🤍'; // White heart emoji
       button.classList.remove('liked');
     }
 
@@ -63,10 +65,12 @@ async function toggleLike(photoName, button) {
     // Update count
     countSpan.textContent = data.count;
 
-    // Update heart color via CSS class and animation
+    // Update heart emoji and animation
     if (data.liked) {
+      heart.textContent = '❤️'; // Red heart emoji
       button.classList.add('liked');
     } else {
+      heart.textContent = '🤍'; // White heart emoji
       button.classList.remove('liked');
     }
 
