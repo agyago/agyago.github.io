@@ -16,19 +16,12 @@
             <li class="gallery-item">
               <a href="{{ file.path | relative_url }}"
                  title="{{ filename_clean }}"
+                 data-photo="{{ filename_from_path }}"
                  data-lightbox="gallery-{{ include.folder | slugify | default: 'default' }}"
                  data-title="{{ filename_clean }}">
                 <img src="//images.weserv.nl/?url={{ site.url | remove_first: 'https://' | remove_first: 'http://' }}{{ file.path | relative_url }}&w=300&h=300&output=jpg&q=50&t=square"
                      alt="Image: {{ filename_clean }}" />
               </a>
-
-              <!-- Likes Section -->
-              <div class="photo-likes" data-photo="{{ filename_from_path }}">
-                <button class="like-button" onclick="toggleLike('{{ filename_from_path }}', this)" aria-label="Like photo">
-                  <span class="heart">♡</span>
-                  <span class="like-count">0</span>
-                </button>
-              </div>
             </li>
           {% endif %}
        {% endif %}

@@ -1,16 +1,6 @@
-// Likes functionality for photo gallery
+// Likes functionality for photo gallery (lightbox only)
 
-// Load like counts when page loads
-document.addEventListener('DOMContentLoaded', function() {
-  const photoLikes = document.querySelectorAll('.photo-likes');
-
-  photoLikes.forEach(function(likeDiv) {
-    const photoName = likeDiv.getAttribute('data-photo');
-    loadLikeStatus(photoName, likeDiv);
-  });
-});
-
-// Load like status for a photo
+// Load like status for a photo (called from lightbox.js)
 async function loadLikeStatus(photoName, likeDiv) {
   try {
     const response = await fetch(`/api/likes?photo=${encodeURIComponent(photoName)}`);
