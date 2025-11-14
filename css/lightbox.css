@@ -128,15 +128,16 @@ transform-origin: 50% 50%;
     transform: scale(0.95);
 }
 
+/* Make the heart color more specific to override the general span rule */
 .lightbox-likes .like-button .heart {
     font-size: 28px;
     line-height: 1;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    color: #262626;
+    color: #262626 !important;  /* Added !important */
 }
 
 .lightbox-likes .like-button.liked .heart {
-    color: #ed4956;
+    color: #ed4956 !important;  /* Added !important */
     animation: likeAnimation 0.4s ease-in-out;
 }
 
@@ -151,7 +152,7 @@ transform-origin: 50% 50%;
 .lightbox-likes .like-button .like-count {
     font-size: 16px;
     font-weight: 600;
-    color: #262626;
+    color: #262626 !important;  /* Added !important */
     min-width: 24px;
     text-align: left;
 }
