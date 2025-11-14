@@ -546,8 +546,5 @@ Now I can upload photos from anywhere with just a few taps - exactly what I want
 - Storage: GitHub API
 - Optimization: GitHub Actions
 
-**GitHub Repository:** *(Add your repo link here if you want to share the code)*
 
 ---
-
-Have you built something similar? What challenges did you face with serverless file uploads? Let me know in the comments!
