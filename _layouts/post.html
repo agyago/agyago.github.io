@@ -1,6 +1,33 @@
 ---
 layout: defaults
 ---
+
+<!-- Structured Data for SEO (Schema.org JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ page.title }}",
+  "description": "{{ page.description | default: page.excerpt | strip_html | truncate: 160 }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.github_username }}",
+    "url": "{{ site.url }}"
+  },
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.date | date_to_xmlschema }}",
+  "publisher": {
+    "@type": "Person",
+    "name": "{{ site.title }}"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  },
+  "keywords": "{{ page.tags | join: ', ' }}"
+}
+</script>
+
 <h1>{{ page.title }}</h1>
 <p>{{ page.date | date_to_string }} - <span>[
     {% for tag in page.tags %}

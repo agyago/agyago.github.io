@@ -1,7 +1,8 @@
 title: cheezychinito
-email: 
-description: >- 
-  journal notes of I think is important
+email:
+description: >-
+  Technical notes on Kubernetes, AWS, Terraform, DevOps, and cloud infrastructure.
+  Troubleshooting guides, tutorials, and lessons learned from real-world experience.
 baseurl: ""
 url: https://www.cheezychinito.com
 twitter_username: cheezychinito
@@ -11,6 +12,7 @@ github_username:  agyago
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
 
 markdown: kramdown
 highlighter: rouge
