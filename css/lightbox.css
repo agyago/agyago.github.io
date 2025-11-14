@@ -129,11 +129,15 @@ transform-origin: 50% 50%;
 }
 
 /* Heart emoji styling - emoji hearts are already colored */
+/* Override the #lightbox span {display: none;} rule */
 .lightbox-likes .like-button .heart {
     font-size: 28px;
     line-height: 1;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: inline-block;
+    display: inline-block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
 }
 
 .lightbox-likes .like-button.liked .heart {
@@ -151,9 +155,13 @@ transform-origin: 50% 50%;
 .lightbox-likes .like-button .like-count {
     font-size: 16px;
     font-weight: 600;
-    color: #262626 !important;  /* Added !important */
+    color: #262626 !important;
     min-width: 24px;
     text-align: left;
+    display: inline-block !important;  /* Override #lightbox span rule */
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
 }
 
 .lightbox-likes .like-button.loading {
