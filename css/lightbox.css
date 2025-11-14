@@ -105,17 +105,17 @@ transform-origin: 50% 50%;
 .lightbox-likes .like-button {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 1);
+    border: 1px solid rgba(255, 255, 255, 1);
     cursor: pointer;
-    padding: 8px 12px;
-    font-size: 14px;
+    padding: 6px 10px;
+    font-size: 12px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     color: #262626;
     transition: all 0.2s ease;
-    border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .lightbox-likes .like-button:hover {
@@ -131,7 +131,7 @@ transform-origin: 50% 50%;
 /* Heart emoji styling - emoji hearts are already colored */
 /* Override the #lightbox span {display: none;} rule */
 .lightbox-likes .like-button .heart {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-block !important;
@@ -153,10 +153,10 @@ transform-origin: 50% 50%;
 }
 
 .lightbox-likes .like-button .like-count {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: #262626 !important;
-    min-width: 20px;
+    min-width: 16px;
     text-align: left;
     display: inline-block !important;  /* Override #lightbox span rule */
     position: static !important;
