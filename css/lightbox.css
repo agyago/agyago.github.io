@@ -107,14 +107,14 @@ transform-origin: 50% 50%;
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 1);
     cursor: pointer;
-    padding: 12px 16px;
-    font-size: 18px;
+    padding: 8px 12px;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     color: #262626;
     transition: all 0.2s ease;
-    border-radius: 30px;
+    border-radius: 20px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -131,7 +131,7 @@ transform-origin: 50% 50%;
 /* Heart emoji styling - emoji hearts are already colored */
 /* Override the #lightbox span {display: none;} rule */
 .lightbox-likes .like-button .heart {
-    font-size: 28px;
+    font-size: 20px;
     line-height: 1;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-block !important;
@@ -153,10 +153,10 @@ transform-origin: 50% 50%;
 }
 
 .lightbox-likes .like-button .like-count {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #262626 !important;
-    min-width: 24px;
+    min-width: 20px;
     text-align: left;
     display: inline-block !important;  /* Override #lightbox span rule */
     position: static !important;
