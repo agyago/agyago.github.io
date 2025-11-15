@@ -1,0 +1,8 @@
+# Cloudflare Pages configuration
+# Use build image v3 for latest tools and performance
+
+version: 3
+
+build:
+  command: bundle exec jekyll build
+  output: _site

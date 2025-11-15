@@ -131,10 +131,18 @@ document.addEventListener("DOMContentLoaded", function() {
     elements.forEach(element => {
         element.addEventListener("click", function(event) {
             event.preventDefault();
-            document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="img" style="background: url(\''+this.getAttribute('href')+'\') center center / contain no-repeat;" title="'+this.getAttribute('title')+'" ><img src="'+this.getAttribute('href')+'" alt="'+this.getAttribute('title')+'" /></div><span>'+this.getAttribute('title')+'</span>';
+            var photoName = this.getAttribute('data-photo') || '';
+
+            document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="img" style="background: url(\''+this.getAttribute('href')+'\') center center / contain no-repeat;" title="'+this.getAttribute('title')+'" ><img src="'+this.getAttribute('href')+'" alt="'+this.getAttribute('title')+'" /></div><span>'+this.getAttribute('title')+'</span><div class="lightbox-likes" data-photo="'+photoName+'"><button class="like-button" onclick="event.stopPropagation(); toggleLike(\''+photoName+'\', this)" aria-label="Like photo"><span class="heart">🤍</span><span class="like-count">0</span></button></div>';
             document.getElementById('lightbox').style.display = 'block';
 
             setGallery(this);
+
+            // Load like status for this photo
+            if(photoName && typeof loadLikeStatus === 'function') {
+                var likeDiv = document.querySelector('.lightbox-likes');
+                loadLikeStatus(photoName, likeDiv);
+            }
         });
     });
 
