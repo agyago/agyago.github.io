@@ -378,7 +378,3 @@ You can build surprisingly powerful features with serverless tools! This like sy
 - Works globally with low latency
 
 All thanks to Cloudflare's edge platform. No servers, no headaches, just fast, free engagement features for your static site.
-
-**Full code:** Check out the complete implementation in this [GitHub repo](https://github.com/yourusername/photo-likes-example) (adapt the link as needed).
-
-Got questions? Drop a comment below! (Just kidding - leave a like instead 😉)
