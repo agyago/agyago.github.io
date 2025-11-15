@@ -2,7 +2,7 @@
 layout: post
 title: "Migrating to Cloudflare Pages Build Image v3 (Without Breaking Your Site)"
 date: 2025-11-15
-categories: [cloudflare, devops, deployment]
+categories: [cloudflare, devops, deployment, migration]
 ---
 
 Cloudflare Pages Build Image v3 went stable in May 2025, bringing Ubuntu 22.04 and modern tooling. If you're still on v1 or v2, it's time to upgrade - but do it wrong and your site breaks. Here's how to migrate safely.
