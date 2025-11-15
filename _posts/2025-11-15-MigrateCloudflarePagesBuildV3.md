@@ -370,6 +370,3 @@ But **ALWAYS lock your versions** first. The 5 minutes to create `.ruby-version`
 4. Merge when confident
 5. Enjoy faster builds!
 
-**Full migration example:** [GitHub repo](https://github.com/yourusername/cloudflare-pages-v3-migration) (adapt as needed)
-
-Have you migrated to v3? Any issues you ran into? Share in the comments!
