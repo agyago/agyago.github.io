@@ -5,7 +5,7 @@ compatibility_date = "2024-11-16"
 # Account ID - Replace with yours
 # Get it from: wrangler whoami
 # Or from dashboard URL when logged in
-account_id = "YOUR_ACCOUNT_ID"
+account_id = "43dcec2e12db1871f28d3b71833fae1c"
 
 # R2 Bucket Binding
 [[r2_buckets]]
@@ -15,7 +15,7 @@ bucket_name = "cheezychinito-photos"
 # KV Namespace Binding
 [[kv_namespaces]]
 binding = "PHOTOS_KV"
-id = "YOUR_KV_NAMESPACE_ID"  # Will be filled after running setup script
+id = "ed1ca44ca8b5435ead34b09fc1fccde7"
 
 # Custom Domain (will be configured after deployment)
 # Uncomment these lines after your first deployment:
