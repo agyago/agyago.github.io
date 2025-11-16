@@ -1,0 +1,34 @@
+name = "photo-server"
+main = "photo-server.js"
+compatibility_date = "2024-11-16"
+
+# Account ID - Replace with yours
+# Get it from: wrangler whoami
+# Or from dashboard URL when logged in
+account_id = "43dcec2e12db1871f28d3b71833fae1c"
+
+# R2 Bucket Binding
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "cheezychinito-photos"
+
+# KV Namespace Binding
+[[kv_namespaces]]
+binding = "PHOTOS_KV"
+id = "ed1ca44ca8b5435ead34b09fc1fccde7"
+
+# Custom Domain (will be configured after deployment)
+# Uncomment these lines after your first deployment:
+# routes = [
+#   { pattern = "photos.cheezychinito.com/*", custom_domain = true }
+# ]
+
+# Compatibility flags
+[build]
+command = ""
+
+[env.production]
+name = "photo-server"
+
+[env.staging]
+name = "photo-server-staging"
