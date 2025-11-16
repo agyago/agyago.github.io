@@ -1,0 +1,117 @@
+<!-- Image Gallery - R2 Version -->
+<!-- Loads photos from Cloudflare R2 via API -->
+
+<script type="text/javascript" src="{{ '/js/lightbox.js' | relative_url }}"></script>
+<link rel="stylesheet" href="{{ '/css/lightbox.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/css/likes.css' | relative_url }}">
+
+<style>
+  .gallery-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+  }
+  .gallery-error {
+    text-align: center;
+    padding: 40px;
+    color: #d32f2f;
+    background: #ffebee;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+</style>
+
+<div id="gallery-container">
+  <div class="gallery-loading">
+    <p>Loading photos...</p>
+  </div>
+</div>
+
+<ul class="image-gallery" id="gallery-grid" style="display: none;">
+  <!-- Photos will be loaded here dynamically -->
+</ul>
+
+<script>
+  (async function loadGallery() {
+    const container = document.getElementById('gallery-container');
+    const grid = document.getElementById('gallery-grid');
+
+    try {
+      // Fetch photo list from API
+      const response = await fetch('/api/photos?metadata=true');
+
+      if (!response.ok) {
+        throw new Error('Failed to load photos');
+      }
+
+      const data = await response.json();
+      const photos = data.photos || [];
+
+      if (photos.length === 0) {
+        container.innerHTML = '<div class="gallery-loading"><p>No photos yet. <a href="/upload">Upload some!</a></p></div>';
+        return;
+      }
+
+      // Photo server URL (will be configured via Cloudflare)
+      // Option 1: Use weserv.nl for resizing (free, your current approach)
+      // Option 2: Use direct R2 URLs (if we pre-generate thumbnails)
+      const PHOTO_SERVER = 'https://photos.cheezychinito.com'; // Your Worker URL
+
+      // Clear loading message
+      container.style.display = 'none';
+      grid.style.display = '';
+
+      // Render each photo
+      photos.forEach(photo => {
+        const filename = photo.filename || photo;
+        const cleanName = filename
+          .replace(/\.[^/.]+$/, '') // Remove extension
+          .replace(/[-_]/g, ' ')    // Replace dashes/underscores with spaces
+          .replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase()); // Capitalize
+
+        const li = document.createElement('li');
+        li.className = 'gallery-item';
+
+        // Option 1: Use weserv.nl for on-the-fly resizing (FREE)
+        const thumbUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${filename}?size=full&w=300&h=300&output=jpg&q=50&t=square`;
+        const fullUrl = `${PHOTO_SERVER}/${filename}?size=full`;
+
+        // Option 2: If pre-generating thumbnails, use direct URLs:
+        // const thumbUrl = `${PHOTO_SERVER}/${filename}?size=thumb`;
+        // const fullUrl = `${PHOTO_SERVER}/${filename}?size=full`;
+
+        li.innerHTML = `
+          <a href="${fullUrl}"
+             title="${cleanName}"
+             data-photo="${filename}"
+             data-lightbox="gallery-r2"
+             data-title="${cleanName}">
+            <img src="${thumbUrl}"
+                 alt="Image: ${cleanName}"
+                 loading="lazy" />
+          </a>
+        `;
+
+        grid.appendChild(li);
+      });
+
+      // Initialize lightbox (if not already initialized)
+      if (typeof lightbox !== 'undefined' && typeof lightbox.init === 'function') {
+        lightbox.init();
+      }
+
+      console.log(`Loaded ${photos.length} photos from R2`);
+
+    } catch (error) {
+      console.error('Gallery loading error:', error);
+      container.innerHTML = `
+        <div class="gallery-error">
+          <p><strong>Failed to load gallery</strong></p>
+          <p>Please try refreshing the page.</p>
+        </div>
+      `;
+    }
+  })();
+</script>
+
+<script src="{{ '/js/likes.js' | relative_url }}"></script>
