@@ -73,7 +73,7 @@ function sanitizeFilename(filename) {
   filename = filename.replace(/[^a-zA-Z0-9._-]/g, '');
 
   // Ensure it ends with a valid extension
-  if (!/\.(jpg|jpeg|png|webp|heic|heif)$/i.test(filename)) {
+  if (!/\.(jpg|jpeg|png|webp)$/i.test(filename)) {
     filename += '.jpg';
   }
 
@@ -209,6 +209,11 @@ export async function onRequestPost({ request, env }) {
 
         // Convert base64 to ArrayBuffer
         const imageBuffer = base64ToArrayBuffer(base64Content);
+
+        // Block HEIC files (can't convert in Workers without large dependencies)
+        if (filename.toLowerCase().endsWith('.heic') || filename.toLowerCase().endsWith('.heif')) {
+          throw new Error(`HEIC/HEIF files are not supported. Please convert ${filename} to JPEG before uploading. On iPhone, you can change Settings > Camera > Formats to "Most Compatible" to capture as JPEG instead.`);
+        }
 
         // Upload to R2
         const uploadResult = await uploadToR2(env, filename, imageBuffer, {

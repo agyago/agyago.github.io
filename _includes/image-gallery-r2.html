@@ -82,6 +82,7 @@
 
         li.innerHTML = `
           <a href="${fullUrl}"
+             class="lightbox-image"
              title="${cleanName}"
              data-photo="${filename}"
              data-lightbox="gallery-r2"
@@ -95,10 +96,24 @@
         grid.appendChild(li);
       });
 
-      // Initialize lightbox (if not already initialized)
-      if (typeof lightbox !== 'undefined' && typeof lightbox.init === 'function') {
-        lightbox.init();
-      }
+      // Manually attach lightbox click handlers to dynamically added links
+      const lightboxLinks = grid.querySelectorAll('a.lightbox-image');
+      lightboxLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+          const photoName = this.getAttribute('data-photo') || '';
+
+          // Create lightbox HTML (same as lightbox.js does)
+          document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="img" style="background: url(\''+this.getAttribute('href')+'\') center center / contain no-repeat;" title="'+this.getAttribute('title')+'" ><img src="'+this.getAttribute('href')+'" alt="'+this.getAttribute('title')+'" /></div><span>'+this.getAttribute('title')+'</span><div class="lightbox-likes" data-photo="'+photoName+'"><button class="like-button" onclick="event.stopPropagation(); toggleLike(\''+photoName+'\', this)" aria-label="Like photo"><span class="heart">🤍</span><span class="like-count">0</span></button></div>';
+          document.getElementById('lightbox').style.display = 'block';
+
+          // Load like status
+          if(photoName && typeof loadLikeStatus === 'function') {
+            const likeDiv = document.querySelector('.lightbox-likes');
+            loadLikeStatus(photoName, likeDiv);
+          }
+        });
+      });
 
       console.log(`Loaded ${photos.length} photos from R2`);
 
