@@ -8,6 +8,9 @@ url: https://www.cheezychinito.com
 twitter_username: cheezychinito
 github_username:  agyago
 
+# Permalink structure - clean URLs with just slug
+permalink: /:title/
+
 # Build settings
 theme: minima
 plugins:
