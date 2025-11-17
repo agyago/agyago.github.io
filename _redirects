@@ -1,0 +1,33 @@
+# Cloudflare Pages Redirects
+# Old URLs → New clean slug-only URLs
+# 301 = Permanent redirect (SEO-friendly)
+
+# Posts without categories (old format: /YYYY/MM/DD/Title)
+/2021/07/04/HelloWorld /hello-world 301
+/2021/07/05/OS101 /os-101 301
+/2021/07/06/Boot /boot 301
+/2022/01/08/PythonBasics /python-basics 301
+/2022/05/14/GitIntro /git-intro 301
+/2025/05/09/daytodayGIT /day-to-day-git 301
+/2025/11/13/ECSFargateGuide /ecs-fargate-guide 301
+/2025/11/13/K8sNetworkTroubleshooting /k8s-network-troubleshooting 301
+/2025/11/13/K8sRealWorldTroubleshooting /k8s-real-world-troubleshooting 301
+/2025/11/13/TerraformAWSMultiVPC /terraform-aws-multi-vpc 301
+
+# Posts with categories (old format: /categories/YYYY/MM/DD/Title)
+/cloudflare/serverless/tutorial/2025/11/15/InstagramLikeButtonCloudflareD1 /instagram-like-button-cloudflare-d1 301
+/cloudflare/devops/deployment/migration/2025/11/15/MigrateCloudflarePagesBuildv3 /migrate-cloudflare-pages-build-v3 301
+
+# Also redirect with trailing slashes (some URLs might have them)
+/2021/07/04/HelloWorld/ /hello-world 301
+/2021/07/05/OS101/ /os-101 301
+/2021/07/06/Boot/ /boot 301
+/2022/01/08/PythonBasics/ /python-basics 301
+/2022/05/14/GitIntro/ /git-intro 301
+/2025/05/09/daytodayGIT/ /day-to-day-git 301
+/2025/11/13/ECSFargateGuide/ /ecs-fargate-guide 301
+/2025/11/13/K8sNetworkTroubleshooting/ /k8s-network-troubleshooting 301
+/2025/11/13/K8sRealWorldTroubleshooting/ /k8s-real-world-troubleshooting 301
+/2025/11/13/TerraformAWSMultiVPC/ /terraform-aws-multi-vpc 301
+/cloudflare/serverless/tutorial/2025/11/15/InstagramLikeButtonCloudflareD1/ /instagram-like-button-cloudflare-d1 301
+/cloudflare/devops/deployment/migration/2025/11/15/MigrateCloudflarePagesBuildv3/ /migrate-cloudflare-pages-build-v3 301
