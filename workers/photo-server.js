@@ -20,18 +20,23 @@ export default {
 
     // Security: Check referer to prevent bypassing
     const referer = request.headers.get('Referer') || '';
+    const userAgent = request.headers.get('User-Agent') || '';
+
+    // Allow these sources:
+    // 1. Your site (cheezychinito.com, agyago.github.io)
+    // 2. weserv.nl (image resizing CDN)
+    // 3. Direct browser navigation (empty referer)
     const isFromYourSite = referer.includes('cheezychinito.com') ||
-                           referer.includes('agyago.github.io') ||
-                           referer === ''; // Allow empty referer for direct browser navigation
+                           referer.includes('agyago.github.io');
+    const isFromWeserv = referer.includes('images.weserv.nl') ||
+                         userAgent.includes('Weserv');
+    const isDirectBrowser = !referer && request.headers.get('Sec-Fetch-Site') === 'same-origin';
 
-    // STRICT MODE: Redirect direct access to gallery
-    if (!referer && request.headers.get('Sec-Fetch-Site') !== 'same-origin') {
-      // Someone is trying to access photo directly (not from your site)
-      return Response.redirect('https://cheezychinito.com/gallery', 302);
-    }
+    // Allow: Your site, weserv.nl, or same-origin requests
+    const isAllowed = isFromYourSite || isFromWeserv || isDirectBrowser;
 
-    // Block hotlinking from other sites
-    if (referer && !isFromYourSite) {
+    // Block everything else (hotlinking, direct external access)
+    if (!isAllowed && referer && !isFromWeserv) {
       return new Response('Hotlinking not allowed. View photos at cheezychinito.com/gallery', {
         status: 403,
         headers: {
