@@ -31,6 +31,7 @@ async function createSessionToken(username, secret) {
 export async function onRequest({ request, env }) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
+  const state = url.searchParams.get('state');
   const error = url.searchParams.get('error');
 
   // Handle OAuth errors
@@ -43,6 +44,19 @@ export async function onRequest({ request, env }) {
 
   if (!code) {
     return new Response('Missing authorization code', { status: 400 });
+  }
+
+  // Validate state parameter (CSRF protection)
+  const cookies = request.headers.get('Cookie') || '';
+  const stateCookie = cookies.split(';')
+    .find(c => c.trim().startsWith('oauth_state='))
+    ?.split('=')[1];
+
+  if (!state || !stateCookie || state !== stateCookie) {
+    return new Response('Invalid state parameter. Possible CSRF attack detected.', {
+      status: 403,
+      headers: { 'Content-Type': 'text/html' }
+    });
   }
 
   try {
@@ -99,11 +113,15 @@ export async function onRequest({ request, env }) {
     const sessionToken = await createSessionToken(userData.login, env.SESSION_SECRET);
 
     // Set secure cookie and redirect to upload page
+    // Clear the oauth_state cookie after successful authentication
+    const sessionCookie = `session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60}`;
+    const clearStateCookie = 'oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0';
+
     return new Response(null, {
       status: 302,
       headers: {
         'Location': '/upload.html',
-        'Set-Cookie': `session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60}`
+        'Set-Cookie': [sessionCookie, clearStateCookie]
       }
     });
 

@@ -5,6 +5,15 @@
 
 export async function onRequestGet({ request, env }) {
   try {
+    // Determine allowed origin based on request origin
+    const origin = request.headers.get('Origin');
+    const allowedOrigins = [
+      'https://www.cheezychinito.com',
+      'https://cheezychinito.com',
+      'https://agyago.github.io'
+    ];
+    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
     // Get photo list from KV
     const photoListJson = await env.PHOTOS_KV.get('photo-list');
 
@@ -15,7 +24,8 @@ export async function onRequestGet({ request, env }) {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=60' // Cache for 1 minute
+            'Cache-Control': 'public, max-age=60',
+            'Access-Control-Allow-Origin': corsOrigin
           }
         }
       );
@@ -52,7 +62,7 @@ export async function onRequestGet({ request, env }) {
         headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=60',
-          'Access-Control-Allow-Origin': '*' // Allow CORS for your domain
+          'Access-Control-Allow-Origin': corsOrigin
         }
       }
     );

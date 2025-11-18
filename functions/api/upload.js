@@ -10,6 +10,8 @@
  * - Tracks uploads
  */
 
+import { checkRateLimit, getRateLimitHeaders } from '../_shared/rate-limit.js';
+
 // Session verification (unchanged from original)
 async function verifySessionToken(token, secret) {
   try {
@@ -59,6 +61,13 @@ function base64ToArrayBuffer(base64) {
     bytes[i] = binaryString.charCodeAt(i);
   }
   return bytes.buffer;
+}
+
+// Get client IP address
+function getClientIP(request) {
+  return request.headers.get('CF-Connecting-IP') ||
+         request.headers.get('X-Forwarded-For')?.split(',')[0].trim() ||
+         'unknown';
 }
 
 // Generate a clean filename
@@ -163,6 +172,26 @@ export async function onRequestPost({ request, env }) {
       return new Response('Forbidden', { status: 403 });
     }
 
+    // Rate limiting: 20 uploads per hour (authenticated users get higher limit)
+    const clientIP = getClientIP(request);
+    const rateLimit = await checkRateLimit(env, clientIP, 'upload', {
+      maxRequests: 20,
+      windowSeconds: 3600 // 1 hour
+    });
+
+    if (!rateLimit.allowed) {
+      return new Response(JSON.stringify({
+        error: 'Upload rate limit exceeded. Please try again later.',
+        retryAfter: rateLimit.retryAfter
+      }), {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json',
+          ...getRateLimitHeaders(rateLimit)
+        }
+      });
+    }
+
     // Parse JSON payload (files sent as base64)
     const contentType = request.headers.get('Content-Type') || '';
     if (!contentType.includes('application/json')) {
@@ -265,7 +294,10 @@ export async function onRequestPost({ request, env }) {
       }),
       {
         status: 200,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json',
+          ...getRateLimitHeaders(rateLimit)
+        }
       }
     );
 
