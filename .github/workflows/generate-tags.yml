@@ -1,0 +1,78 @@
+name: Auto-Generate Tag Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '_posts/**'
+      - '.github/workflows/generate-tags.yml'
+
+jobs:
+  generate-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract and generate tag pages
+        run: |
+          echo "🔍 Scanning posts for tags..."
+
+          # Extract all unique tags from posts
+          tags=$(grep -rh "^tags:" _posts/ | sed 's/tags: //' | tr ' ' '\n' | sort -u | grep -v "^$")
+
+          tag_count=0
+          new_tags=0
+
+          # Create tag directory if it doesn't exist
+          mkdir -p tag
+
+          # Create tag page for each tag
+          for tag in $tags; do
+            tag_count=$((tag_count + 1))
+            tagfile="tag/${tag}.md"
+
+            # Skip if already exists
+            if [ -f "$tagfile" ]; then
+              echo "  ✓ $tag (already exists)"
+              continue
+            fi
+
+            # Create new tag page
+            cat > "$tagfile" << EOF
+          ---
+          layout: tagpage
+          title: "Tag: $tag"
+          tag: $tag
+          robots: noindex
+          ---
+          EOF
+
+            echo "  ✨ $tag (created)"
+            new_tags=$((new_tags + 1))
+          done
+
+          echo ""
+          echo "📊 Summary:"
+          echo "  Total tags: $tag_count"
+          echo "  New tags created: $new_tags"
+
+      - name: Commit and push new tag pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add tag/
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "✅ No new tag pages to commit"
+          else
+            git commit -m "Auto-generate tag pages [skip ci]"
+            git push
+            echo "✅ New tag pages committed and pushed"
+          fi
