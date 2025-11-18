@@ -2,9 +2,13 @@
 // GET: Returns like count and whether current IP has liked
 // POST: Toggles like (add/remove)
 
-async function hashIP(ip) {
+import { checkRateLimit, getRateLimitHeaders } from '../_shared/rate-limit.js';
+
+async function hashIP(ip, salt) {
   const encoder = new TextEncoder();
-  const data = encoder.encode(ip);
+  // Use environment variable for salt, fallback to default if not set
+  const actualSalt = salt || 'default-salt-change-in-production';
+  const data = encoder.encode(ip + actualSalt);
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
@@ -31,7 +35,27 @@ export async function onRequestGet({ request, env }) {
 
   try {
     const clientIP = getClientIP(request);
-    const ipHash = await hashIP(clientIP);
+
+    // Rate limiting: 30 requests per minute for GET
+    const rateLimit = await checkRateLimit(env, clientIP, 'likes-get', {
+      maxRequests: 30,
+      windowSeconds: 60
+    });
+
+    if (!rateLimit.allowed) {
+      return new Response(JSON.stringify({
+        error: 'Rate limit exceeded',
+        retryAfter: rateLimit.retryAfter
+      }), {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json',
+          ...getRateLimitHeaders(rateLimit)
+        }
+      });
+    }
+
+    const ipHash = await hashIP(clientIP, env.IP_HASH_SALT);
 
     // Get total like count for this photo
     const countResult = await env.DB.prepare(
@@ -50,7 +74,8 @@ export async function onRequestGet({ request, env }) {
     }), {
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache',
+        ...getRateLimitHeaders(rateLimit)
       }
     });
 
@@ -82,7 +107,27 @@ export async function onRequestPost({ request, env }) {
     }
 
     const clientIP = getClientIP(request);
-    const ipHash = await hashIP(clientIP);
+
+    // Rate limiting: 10 likes/unlikes per minute (more strict than GET)
+    const rateLimit = await checkRateLimit(env, clientIP, 'likes-post', {
+      maxRequests: 10,
+      windowSeconds: 60
+    });
+
+    if (!rateLimit.allowed) {
+      return new Response(JSON.stringify({
+        error: 'Rate limit exceeded. Please try again later.',
+        retryAfter: rateLimit.retryAfter
+      }), {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json',
+          ...getRateLimitHeaders(rateLimit)
+        }
+      });
+    }
+
+    const ipHash = await hashIP(clientIP, env.IP_HASH_SALT);
     const timestamp = Date.now();
 
     // Check if already liked
@@ -107,7 +152,10 @@ export async function onRequestPost({ request, env }) {
         count: countResult.count || 0,
         liked: false
       }), {
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json',
+          ...getRateLimitHeaders(rateLimit)
+        }
       });
 
     } else {
@@ -127,7 +175,10 @@ export async function onRequestPost({ request, env }) {
         count: countResult.count || 0,
         liked: true
       }), {
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json',
+          ...getRateLimitHeaders(rateLimit)
+        }
       });
     }
 

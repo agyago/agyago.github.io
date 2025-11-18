@@ -26,10 +26,33 @@ export default {
     // 1. Your site (cheezychinito.com, agyago.github.io)
     // 2. weserv.nl (image resizing CDN)
     // 3. Direct browser navigation (empty referer)
-    const isFromYourSite = referer.includes('cheezychinito.com') ||
-                           referer.includes('agyago.github.io');
-    const isFromWeserv = referer.includes('images.weserv.nl') ||
-                         userAgent.includes('Weserv');
+
+    let isFromYourSite = false;
+    let isFromWeserv = false;
+
+    // Properly validate referer using URL parsing (prevents bypass attacks)
+    if (referer) {
+      try {
+        const refererUrl = new URL(referer);
+        const allowedHosts = [
+          'cheezychinito.com',
+          'www.cheezychinito.com',
+          'agyago.github.io'
+        ];
+        isFromYourSite = allowedHosts.includes(refererUrl.hostname);
+        isFromWeserv = refererUrl.hostname === 'images.weserv.nl';
+      } catch (e) {
+        // Invalid URL in referer header - treat as suspicious
+        isFromYourSite = false;
+        isFromWeserv = false;
+      }
+    }
+
+    // Also check User-Agent for weserv (for cases where referer is missing)
+    if (userAgent.includes('Weserv')) {
+      isFromWeserv = true;
+    }
+
     const isDirectBrowser = !referer && request.headers.get('Sec-Fetch-Site') === 'same-origin';
 
     // Allow: Your site, weserv.nl, or same-origin requests
@@ -69,7 +92,7 @@ export default {
       }
 
       // Track view (async, doesn't slow down response)
-      ctx.waitUntil(trackView(env, filename, request, size));
+      ctx.waitUntil(trackView(env, filename, request, size, env.IP_HASH_SALT));
 
       // Serve the photo with caching headers
       const headers = new Headers();
@@ -102,7 +125,7 @@ export default {
  * Track photo view in KV
  * Runs asynchronously (doesn't slow down image serving)
  */
-async function trackView(env, filename, request, size) {
+async function trackView(env, filename, request, size, ipHashSalt) {
   try {
     // Track total views for this photo
     const viewKey = `views:${filename}`;
@@ -135,7 +158,7 @@ async function trackView(env, filename, request, size) {
       size: size,
       referer: request.headers.get('Referer'),
       userAgent: request.headers.get('User-Agent'),
-      ip_hash: await hashIP(getClientIP(request)),
+      ip_hash: await hashIP(getClientIP(request), ipHashSalt),
       country: request.cf?.country || 'unknown'
     }), {
       expirationTtl: 604800 // Keep detailed logs for 7 days
@@ -151,9 +174,11 @@ async function trackView(env, filename, request, size) {
 /**
  * Hash IP address for privacy
  */
-async function hashIP(ip) {
+async function hashIP(ip, salt) {
   const encoder = new TextEncoder();
-  const data = encoder.encode(ip + 'SALT_YOUR_SECRET_HERE'); // Add a salt
+  // Use environment variable for salt, fallback to default if not set
+  const actualSalt = salt || 'default-salt-change-in-production';
+  const data = encoder.encode(ip + actualSalt);
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16);
