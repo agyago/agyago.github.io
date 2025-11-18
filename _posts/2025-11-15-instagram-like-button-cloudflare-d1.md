@@ -3,7 +3,7 @@ layout: post
 title: "Building an Instagram-Style Like Button with Cloudflare D1 (No Backend Required)"
 date: 2025-11-15
 description: Photo Gallery with like button
-catetags:tags: [cloudflare, serverless, tutorial]
+tags: [cloudflare, serverless, tutorial]
 ---
 
 Ever wanted to add engagement features to your static site without spinning up a backend server? Here's how I built an Instagram-style like button using Cloudflare D1 (serverless SQLite) that works on the edge with zero infrastructure.
