@@ -6,3 +6,7 @@ vendor
 node_modules/
 .wrangler/
 *.bak
+
+# Package files for batch watermarking (keep script, ignore dependencies)
+package.json
+package-lock.json
