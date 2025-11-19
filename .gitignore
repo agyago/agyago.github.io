@@ -7,7 +7,6 @@ node_modules/
 .wrangler/
 *.bak
 
-# One-time batch watermarking script (not for production)
-batch-watermark.js
+# Package files for batch watermarking (keep script, ignore dependencies)
 package.json
 package-lock.json
