@@ -6,3 +6,8 @@ vendor
 node_modules/
 .wrangler/
 *.bak
+
+# One-time batch watermarking script (not for production)
+batch-watermark.js
+package.json
+package-lock.json
