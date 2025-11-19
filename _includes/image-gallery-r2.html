@@ -73,8 +73,9 @@
         li.className = 'gallery-item';
 
         // Use weserv.nl for both thumbnail and full size (FREE)
-        const thumbUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${filename}?size=full&w=300&h=300&output=jpg&q=50&t=square`;
-        const fullUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${filename}?size=full&w=2000&output=jpg&q=85`;
+        // v=2 forces cache refresh after adding watermarks
+        const thumbUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${filename}?size=full&v=2&w=300&h=300&output=jpg&q=50&t=square`;
+        const fullUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${filename}?size=full&v=2&w=2000&output=jpg&q=85`;
 
         // Option 2: If pre-generating thumbnails, use direct URLs:
         // const thumbUrl = `${PHOTO_SERVER}/${filename}?size=thumb`;
