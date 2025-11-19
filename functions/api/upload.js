@@ -5,12 +5,29 @@
  * Features:
  * - OAuth authentication (same as before)
  * - Uploads to private R2 bucket
+ * - Automatic watermarking (adds "cheezychinito" branding)
  * - Generates thumbnail (300x300) and full size (2000px)
  * - Stores metadata in KV
  * - Tracks uploads
  */
 
 import { checkRateLimit, getRateLimitHeaders } from '../_shared/rate-limit.js';
+import { addCheezychinitoBrand, addWatermark } from './watermark.js';
+
+// ========================================
+// WATERMARK CONFIGURATION
+// ========================================
+const WATERMARK_CONFIG = {
+  enabled: true,  // Set to false to disable watermarking
+  text: 'cheezychinito',  // Watermark text
+  position: 'bottom-left',  // bottom-left, bottom-right, top-left, top-right
+  fontSize: 28,
+  color: 'white',
+  opacity: 0.85,
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  padding: 25,
+  backgroundPadding: 12
+};
 
 // Session verification (unchanged from original)
 async function verifySessionToken(token, secret) {
@@ -237,11 +254,28 @@ export async function onRequestPost({ request, env }) {
         }
 
         // Convert base64 to ArrayBuffer
-        const imageBuffer = base64ToArrayBuffer(base64Content);
+        let imageBuffer = base64ToArrayBuffer(base64Content);
 
         // Block HEIC files (can't convert in Workers without large dependencies)
         if (filename.toLowerCase().endsWith('.heic') || filename.toLowerCase().endsWith('.heif')) {
           throw new Error(`HEIC/HEIF files are not supported. Please convert ${filename} to JPEG before uploading. On iPhone, you can change Settings > Camera > Formats to "Most Compatible" to capture as JPEG instead.`);
+        }
+
+        // Add watermark before uploading (if enabled)
+        if (WATERMARK_CONFIG.enabled) {
+          console.log(`Adding watermark to ${filename}...`);
+          imageBuffer = await addWatermark(imageBuffer, WATERMARK_CONFIG.text, {
+            position: WATERMARK_CONFIG.position,
+            fontSize: WATERMARK_CONFIG.fontSize,
+            color: WATERMARK_CONFIG.color,
+            opacity: WATERMARK_CONFIG.opacity,
+            backgroundColor: WATERMARK_CONFIG.backgroundColor,
+            padding: WATERMARK_CONFIG.padding,
+            backgroundPadding: WATERMARK_CONFIG.backgroundPadding
+          });
+          console.log(`Watermark added to ${filename}`);
+        } else {
+          console.log(`Watermark disabled for ${filename}`);
         }
 
         // Upload to R2
