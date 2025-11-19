@@ -101,7 +101,7 @@ function downloadFromR2(filename, outputPath) {
     console.log(`  Downloading ${filename} from R2...`);
     try {
         execSync(`npx wrangler r2 object get "${R2_BUCKET}/full/${filename}" --file="${outputPath}" --remote`, {
-            stdio: 'pipe'
+            stdio: 'inherit'  // Show wrangler output so we can see errors
         });
         return true;
     } catch (error) {
@@ -117,7 +117,7 @@ function uploadToR2(filepath, filename) {
     console.log(`  Uploading watermarked ${filename} to R2...`);
     try {
         execSync(`npx wrangler r2 object put "${R2_BUCKET}/full/${filename}" --file="${filepath}" --remote`, {
-            stdio: 'pipe'
+            stdio: 'inherit'  // Show wrangler output
         });
         console.log(`  ✓ Uploaded to R2`);
         return true;
