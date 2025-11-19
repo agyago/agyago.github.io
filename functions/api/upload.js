@@ -18,7 +18,7 @@ import { addCheezychinitoBrand, addWatermark } from './watermark.js';
 // WATERMARK CONFIGURATION
 // ========================================
 const WATERMARK_CONFIG = {
-  enabled: true,  // Set to false to disable watermarking
+  enabled: false,  // DISABLED: Canvas API not available in Cloudflare Pages Functions
   text: 'cheezychinito',  // Watermark text
   position: 'bottom-left',  // bottom-left, bottom-right, top-left, top-right
   fontSize: 28,

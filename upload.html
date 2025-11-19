@@ -233,7 +233,8 @@ layout: defaults
                             or drag and drop here
                         </div>
                         <div style="font-size: 12px; color: #999; margin-top: 10px;">
-                            JPG, PNG, HEIC • Max 20MB per file
+                            JPG, PNG, HEIC • Max 20MB per file<br>
+                            <span style="color: #28a745;">✓ Automatic watermarking enabled</span>
                         </div>
                     </div>
                 </label>
@@ -254,6 +255,119 @@ layout: defaults
 
     <script>
         let selectedFiles = [];
+
+        // ========================================
+        // WATERMARK CONFIGURATION
+        // ========================================
+        const WATERMARK_CONFIG = {
+            enabled: true,  // Set to false to disable watermarking
+            text: 'cheezychinito',
+            position: 'bottom-left',  // bottom-left, bottom-right, top-left, top-right
+            fontSize: 28,
+            fontFamily: 'Arial, sans-serif',
+            color: 'white',
+            opacity: 0.85,
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            padding: 25,
+            backgroundPadding: 12
+        };
+
+        /**
+         * Add watermark to image using Canvas API
+         * @param {File} imageFile - Original image file
+         * @returns {Promise<Blob>} - Watermarked image as blob
+         */
+        async function addWatermarkToImage(imageFile) {
+            if (!WATERMARK_CONFIG.enabled) {
+                return imageFile;
+            }
+
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    img.onload = () => {
+                        try {
+                            // Create canvas with same dimensions as image
+                            const canvas = document.createElement('canvas');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            const ctx = canvas.getContext('2d');
+
+                            // Draw original image
+                            ctx.drawImage(img, 0, 0);
+
+                            // Prepare watermark text
+                            ctx.font = `${WATERMARK_CONFIG.fontSize}px ${WATERMARK_CONFIG.fontFamily}`;
+                            const textMetrics = ctx.measureText(WATERMARK_CONFIG.text);
+                            const textWidth = textMetrics.width;
+                            const textHeight = WATERMARK_CONFIG.fontSize * 1.2;
+
+                            // Calculate position
+                            let x, y;
+                            switch (WATERMARK_CONFIG.position) {
+                                case 'bottom-left':
+                                    x = WATERMARK_CONFIG.padding;
+                                    y = canvas.height - WATERMARK_CONFIG.padding;
+                                    break;
+                                case 'bottom-right':
+                                    x = canvas.width - textWidth - WATERMARK_CONFIG.padding;
+                                    y = canvas.height - WATERMARK_CONFIG.padding;
+                                    break;
+                                case 'top-left':
+                                    x = WATERMARK_CONFIG.padding;
+                                    y = WATERMARK_CONFIG.padding + WATERMARK_CONFIG.fontSize;
+                                    break;
+                                case 'top-right':
+                                    x = canvas.width - textWidth - WATERMARK_CONFIG.padding;
+                                    y = WATERMARK_CONFIG.padding + WATERMARK_CONFIG.fontSize;
+                                    break;
+                                default:
+                                    x = WATERMARK_CONFIG.padding;
+                                    y = canvas.height - WATERMARK_CONFIG.padding;
+                            }
+
+                            // Draw background box
+                            if (WATERMARK_CONFIG.backgroundColor) {
+                                ctx.fillStyle = WATERMARK_CONFIG.backgroundColor;
+                                ctx.fillRect(
+                                    x - WATERMARK_CONFIG.backgroundPadding,
+                                    y - WATERMARK_CONFIG.fontSize - WATERMARK_CONFIG.backgroundPadding,
+                                    textWidth + (WATERMARK_CONFIG.backgroundPadding * 2),
+                                    textHeight + WATERMARK_CONFIG.backgroundPadding
+                                );
+                            }
+
+                            // Draw watermark text
+                            ctx.globalAlpha = WATERMARK_CONFIG.opacity;
+                            ctx.fillStyle = WATERMARK_CONFIG.color;
+                            ctx.font = `${WATERMARK_CONFIG.fontSize}px ${WATERMARK_CONFIG.fontFamily}`;
+                            ctx.fillText(WATERMARK_CONFIG.text, x, y);
+
+                            // Convert canvas to blob
+                            canvas.toBlob((blob) => {
+                                if (blob) {
+                                    resolve(blob);
+                                } else {
+                                    reject(new Error('Failed to create watermarked image'));
+                                }
+                            }, 'image/jpeg', 0.92); // High quality JPEG
+
+                        } catch (error) {
+                            console.error('Watermarking error:', error);
+                            reject(error);
+                        }
+                    };
+
+                    img.onerror = () => reject(new Error('Failed to load image'));
+                    img.src = e.target.result;
+                };
+
+                reader.onerror = () => reject(new Error('Failed to read file'));
+                reader.readAsDataURL(imageFile);
+            });
+        }
 
         // Check authentication status on page load
         window.addEventListener('DOMContentLoaded', async () => {
@@ -361,13 +475,31 @@ layout: defaults
             if (selectedFiles.length === 0) return;
 
             uploadBtn.disabled = true;
-            uploadBtn.innerHTML = '<span class="loading"></span> Uploading...';
+            uploadBtn.innerHTML = '<span class="loading"></span> Adding watermarks...';
 
             try {
-                // Convert files to base64 for JSON upload
-                console.log('=== Converting files to base64 ===');
-                const filesData = await Promise.all(
+                // Apply watermarks to images
+                console.log('=== Adding watermarks to images ===');
+                const watermarkedFiles = await Promise.all(
                     selectedFiles.map(async (file) => {
+                        try {
+                            const watermarkedBlob = await addWatermarkToImage(file);
+                            console.log(`Watermarked ${file.name}: ${file.size} bytes -> ${watermarkedBlob.size} bytes`);
+                            // Convert blob back to file with original name
+                            return new File([watermarkedBlob], file.name, { type: 'image/jpeg' });
+                        } catch (error) {
+                            console.warn(`Watermarking failed for ${file.name}, using original:`, error);
+                            return file; // Fallback to original if watermarking fails
+                        }
+                    })
+                );
+
+                uploadBtn.innerHTML = '<span class="loading"></span> Uploading...';
+
+                // Convert watermarked files to base64 for JSON upload
+                console.log('=== Converting watermarked files to base64 ===');
+                const filesData = await Promise.all(
+                    watermarkedFiles.map(async (file) => {
                         return new Promise((resolve, reject) => {
                             const reader = new FileReader();
                             reader.onload = () => {
@@ -400,7 +532,7 @@ layout: defaults
                     throw new Error(await response.text());
                 }
 
-                showStatus(`✓ Successfully uploaded ${selectedFiles.length} photo${selectedFiles.length > 1 ? 's' : ''}! Images will be optimized and live in ~1 minute.`, 'success');
+                showStatus(`✓ Successfully uploaded ${selectedFiles.length} watermarked photo${selectedFiles.length > 1 ? 's' : ''}! Images will be live in ~1 minute.`, 'success');
 
                 // Reset
                 selectedFiles = [];
