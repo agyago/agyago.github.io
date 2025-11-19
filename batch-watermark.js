@@ -131,9 +131,10 @@ function uploadToR2(filepath, filename) {
  * Process a single photo
  */
 async function processPhoto(filename) {
-    const tempDir = '/tmp/watermark';
+    const os = require('os');
+    const tempDir = `${os.homedir()}/watermark-temp`;
     if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, { recursive: true, mode: 0o755 });
+        fs.mkdirSync(tempDir, { recursive: true });
     }
 
     const originalPath = `${tempDir}/${filename}`;
