@@ -294,6 +294,7 @@ docker container prune
 
 ### Container Inspection
 
+{% raw %}
 ```bash
 # List running containers
 docker ps
@@ -315,6 +316,7 @@ docker stats myapp
 # Processes inside container
 docker top myapp
 ```
+{% endraw %}
 
 ---
 
@@ -469,6 +471,7 @@ docker exec api ping db  # Works!
 
 ### Network Debugging
 
+{% raw %}
 ```bash
 # Check container's network settings
 docker inspect mycontainer --format '{{json .NetworkSettings}}' | jq
@@ -490,6 +493,7 @@ sudo iptables -t nat -L -n -v
 docker exec mycontainer netstat -tlnp
 docker exec mycontainer ss -tlnp
 ```
+{% endraw %}
 
 ### Network Comparison Table
 
@@ -615,6 +619,7 @@ docker run -v myconfig:/etc/app/config:ro myapp
 
 ### Storage Debugging
 
+{% raw %}
 ```bash
 # See what's using disk space
 docker system df
@@ -627,6 +632,7 @@ docker volume inspect myvolume --format '{{.Mountpoint}}'
 docker exec mycontainer df -h
 docker exec mycontainer mount | grep /data
 ```
+{% endraw %}
 
 ---
 
@@ -1299,6 +1305,7 @@ services:
 
 ### Monitoring Resource Usage
 
+{% raw %}
 ```bash
 # Real-time stats
 docker stats
@@ -1312,6 +1319,7 @@ docker stats --no-stream
 # Format output
 docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"
 ```
+{% endraw %}
 
 ---
 
@@ -1390,6 +1398,7 @@ docker ps -a
 ```
 
 **Diagnosis:**
+{% raw %}
 ```bash
 # Check exit code
 docker inspect myapp --format '{{.State.ExitCode}}'
@@ -1404,6 +1413,7 @@ docker logs myapp
 # 139 - SIGSEGV (segmentation fault)
 # 143 - SIGTERM (docker stop)
 ```
+{% endraw %}
 
 **Common Causes:**
 
@@ -1433,12 +1443,15 @@ docker run -e REQUIRED_VAR=value myapp
 ### Issue 2: OOM Killed (Exit Code 137)
 
 **Symptoms:**
+{% raw %}
 ```bash
 docker inspect myapp --format '{{.State.OOMKilled}}'
 # true
 ```
+{% endraw %}
 
 **Diagnosis:**
+{% raw %}
 ```bash
 # Check memory usage before kill
 docker stats myapp --no-stream
@@ -1449,6 +1462,7 @@ docker inspect myapp --format '{{.HostConfig.Memory}}'
 # Check host memory
 free -h
 ```
+{% endraw %}
 
 **Solutions:**
 

@@ -38,6 +38,14 @@ pre {
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS Safari */
 }
 
+/* Code inside pre blocks must preserve whitespace for ASCII art */
+pre code {
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+}
+
+/* Inline code can wrap */
 code {
   overflow-x: auto;
   white-space: pre-wrap;
@@ -183,6 +191,13 @@ table {
   font-family: 'Courier New', Courier, monospace;
   font-size: 14px;
   line-height: 1.5;
+  white-space: pre;
+}
+
+.highlight pre code {
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
 }
 
 .highlight .hll { background-color: #282a36 }
