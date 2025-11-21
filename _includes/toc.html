@@ -1,0 +1,41 @@
+{% comment %}
+Table of Contents Generator
+Extracts h2 and h3 headings from content and creates a navigable TOC
+{% endcomment %}
+
+{% assign headings = content | split: '<h2' %}
+{% assign has_headings = false %}
+
+{% for heading in headings %}
+  {% if heading contains 'id="' %}
+    {% assign has_headings = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if has_headings %}
+<nav class="toc" aria-label="Table of Contents">
+  <details open>
+    <summary><strong>Table of Contents</strong></summary>
+    <ul class="toc-list">
+      {% assign headings_all = content | split: '<h' %}
+      {% for heading in headings_all %}
+        {% assign first_char = heading | slice: 0, 1 %}
+        {% if first_char == '2' or first_char == '3' %}
+          {% assign id_start = heading | split: 'id="' %}
+          {% if id_start.size > 1 %}
+            {% assign id_part = id_start[1] | split: '"' | first %}
+            {% assign text_start = heading | split: '>' %}
+            {% assign text_part = text_start[1] | split: '</h' | first | strip_html %}
+            {% if first_char == '2' %}
+            <li class="toc-h2"><a href="#{{ id_part }}">{{ text_part }}</a></li>
+            {% else %}
+            <li class="toc-h3"><a href="#{{ id_part }}">{{ text_part }}</a></li>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </details>
+</nav>
+{% endif %}
