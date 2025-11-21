@@ -31,7 +31,14 @@ h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-pre, code {
+pre {
+  overflow-x: auto;
+  white-space: pre;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS Safari */
+}
+
+code {
   overflow-x: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -274,5 +281,16 @@ th {
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* Mobile code block styles - preserve ASCII art */
+  pre {
+    font-size: 12px;
+    padding: 12px;
+    border-radius: 4px;
+  }
+
+  .highlight pre {
+    font-size: 12px;
   }
 }
