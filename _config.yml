@@ -22,6 +22,8 @@ highlighter: rouge
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+  auto_ids: true
+  toc_levels: 2..3
 
 defaults:
   - scope:

@@ -309,3 +309,150 @@ th {
     font-size: 12px;
   }
 }
+
+/* ===========================
+   Post Meta (date, reading time, tags)
+   =========================== */
+.post-meta {
+  color: #999;
+  font-size: 0.9em;
+  margin-bottom: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.post-date {
+  margin-right: 0.5em;
+}
+
+.post-reading-time {
+  background: #444;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.post-tags {
+  margin-left: 0.5em;
+}
+
+/* ===========================
+   Table of Contents
+   =========================== */
+.toc {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1em;
+  margin: 1.5em 0;
+  max-width: 400px;
+}
+
+.toc details summary {
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25em 0;
+}
+
+.toc details summary:hover {
+  color: #0af;
+}
+
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.75em 0 0 0;
+}
+
+.toc-list li {
+  padding: 0.25em 0;
+  border-bottom: 1px solid #333;
+}
+
+.toc-list li:last-child {
+  border-bottom: none;
+}
+
+.toc-list a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.toc-list a:hover {
+  color: #0af;
+}
+
+.toc-h2 {
+  font-weight: 500;
+}
+
+.toc-h3 {
+  padding-left: 1em;
+  font-size: 0.9em;
+  color: #888;
+}
+
+/* ===========================
+   Back to Top Button
+   =========================== */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: #444;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s, background 0.3s;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: #0af;
+}
+
+.back-to-top svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+  .post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3em;
+  }
+
+  .post-tags {
+    margin-left: 0;
+  }
+
+  .toc {
+    max-width: 100%;
+  }
+
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+}
