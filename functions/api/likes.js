@@ -15,10 +15,9 @@ async function hashIP(ip, salt) {
 }
 
 function getClientIP(request) {
-  // Cloudflare provides the real IP in CF-Connecting-IP header
-  return request.headers.get('CF-Connecting-IP') ||
-         request.headers.get('X-Forwarded-For')?.split(',')[0] ||
-         'unknown';
+  // Security: Only trust Cloudflare's CF-Connecting-IP header
+  // Do NOT fall back to X-Forwarded-For as it can be spoofed by attackers
+  return request.headers.get('CF-Connecting-IP') || 'unknown';
 }
 
 // GET /api/likes?photo=IMG_0162.jpg

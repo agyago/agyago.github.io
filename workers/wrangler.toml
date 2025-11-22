@@ -2,9 +2,10 @@ name = "photo-server"
 main = "photo-server.js"
 compatibility_date = "2024-11-16"
 
-# Account ID - Replace with yours
+# SECURITY NOTE: Account ID is semi-public (visible in Cloudflare dashboard URLs)
+# For better security, you can set CLOUDFLARE_ACCOUNT_ID environment variable instead
+# and remove this line. Wrangler will use the env var automatically.
 # Get it from: wrangler whoami
-# Or from dashboard URL when logged in
 account_id = "43dcec2e12db1871f28d3b71833fae1c"
 
 # R2 Bucket Binding

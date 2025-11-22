@@ -36,6 +36,22 @@
     const container = document.getElementById('gallery-container');
     const grid = document.getElementById('gallery-grid');
 
+    // Security: Escape HTML special characters to prevent XSS
+    function escapeHtmlAttr(text) {
+      if (!text) return '';
+      return text.replace(/&/g, '&amp;')
+                 .replace(/"/g, '&quot;')
+                 .replace(/'/g, '&#39;')
+                 .replace(/</g, '&lt;')
+                 .replace(/>/g, '&gt;');
+    }
+
+    // Security: Escape for use in CSS url()
+    function escapeUrlForCss(url) {
+      if (!url) return '';
+      return encodeURI(url).replace(/'/g, '%27').replace(/"/g, '%22');
+    }
+
     try {
       // Fetch photo list from API
       const response = await fetch('/api/photos?metadata=true');
@@ -53,15 +69,13 @@
       }
 
       // Photo server URL (will be configured via Cloudflare)
-      // Option 1: Use weserv.nl for resizing (free, your current approach)
-      // Option 2: Use direct R2 URLs (if we pre-generate thumbnails)
-      const PHOTO_SERVER = 'https://photos.cheezychinito.com'; // Your Worker URL
+      const PHOTO_SERVER = 'https://photos.cheezychinito.com';
 
       // Clear loading message
       container.style.display = 'none';
       grid.style.display = '';
 
-      // Render each photo
+      // Render each photo using safe DOM methods
       photos.forEach(photo => {
         const filename = photo.filename || photo;
         const cleanName = filename
@@ -73,27 +87,26 @@
         li.className = 'gallery-item';
 
         // Use weserv.nl for both thumbnail and full size (FREE)
-        // v=2 forces cache refresh after adding watermarks
-        const thumbUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${filename}?size=full&v=2&w=300&h=300&output=jpg&q=50&t=square`;
-        const fullUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${filename}?size=full&v=2&w=2000&output=jpg&q=85`;
+        const thumbUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${encodeURIComponent(filename)}?size=full&v=2&w=300&h=300&output=jpg&q=50&t=square`;
+        const fullUrl = `//images.weserv.nl/?url=${PHOTO_SERVER}/${encodeURIComponent(filename)}?size=full&v=2&w=2000&output=jpg&q=85`;
 
-        // Option 2: If pre-generating thumbnails, use direct URLs:
-        // const thumbUrl = `${PHOTO_SERVER}/${filename}?size=thumb`;
-        // const fullUrl = `${PHOTO_SERVER}/${filename}?size=full`;
+        // Create anchor element safely
+        const a = document.createElement('a');
+        a.href = fullUrl;
+        a.className = 'lightbox-image';
+        a.title = cleanName;
+        a.setAttribute('data-photo', filename);
+        a.setAttribute('data-lightbox', 'gallery-r2');
+        a.setAttribute('data-title', cleanName);
 
-        li.innerHTML = `
-          <a href="${fullUrl}"
-             class="lightbox-image"
-             title="${cleanName}"
-             data-photo="${filename}"
-             data-lightbox="gallery-r2"
-             data-title="${cleanName}">
-            <img src="${thumbUrl}"
-                 alt="Image: ${cleanName}"
-                 loading="lazy" />
-          </a>
-        `;
+        // Create image element safely
+        const img = document.createElement('img');
+        img.src = thumbUrl;
+        img.alt = 'Image: ' + cleanName;
+        img.loading = 'lazy';
 
+        a.appendChild(img);
+        li.appendChild(a);
         grid.appendChild(li);
       });
 
@@ -103,10 +116,77 @@
         link.addEventListener('click', function(event) {
           event.preventDefault();
           const photoName = this.getAttribute('data-photo') || '';
+          const href = this.getAttribute('href');
+          const title = this.getAttribute('title');
 
-          // Create lightbox HTML (same as lightbox.js does)
-          document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="img" style="background: url(\''+this.getAttribute('href')+'\') center center / contain no-repeat;" title="'+this.getAttribute('title')+'" ><img src="'+this.getAttribute('href')+'" alt="'+this.getAttribute('title')+'" /></div><span>'+this.getAttribute('title')+'</span><div class="lightbox-likes" data-photo="'+photoName+'"><button class="like-button" onclick="event.stopPropagation(); toggleLike(\''+photoName+'\', this)" aria-label="Like photo"><span class="heart">🤍</span><span class="like-count">0</span></button></div>';
-          document.getElementById('lightbox').style.display = 'block';
+          // Create lightbox elements safely using DOM methods
+          const lightbox = document.getElementById('lightbox');
+          lightbox.innerHTML = '';
+
+          // Create close button
+          const closeBtn = document.createElement('a');
+          closeBtn.id = 'close';
+          lightbox.appendChild(closeBtn);
+
+          // Create next button
+          const nextBtn = document.createElement('a');
+          nextBtn.id = 'next';
+          nextBtn.innerHTML = '&rsaquo;';
+          lightbox.appendChild(nextBtn);
+
+          // Create prev button
+          const prevBtn = document.createElement('a');
+          prevBtn.id = 'prev';
+          prevBtn.innerHTML = '&lsaquo;';
+          lightbox.appendChild(prevBtn);
+
+          // Create image container
+          const imgDiv = document.createElement('div');
+          imgDiv.className = 'img';
+          imgDiv.style.background = "url('" + escapeUrlForCss(href) + "') center center / contain no-repeat";
+          imgDiv.title = title;
+
+          const imgEl = document.createElement('img');
+          imgEl.src = href;
+          imgEl.alt = title;
+          imgDiv.appendChild(imgEl);
+          lightbox.appendChild(imgDiv);
+
+          // Create title span
+          const titleSpan = document.createElement('span');
+          titleSpan.textContent = title;
+          lightbox.appendChild(titleSpan);
+
+          // Create likes section
+          const likesDiv = document.createElement('div');
+          likesDiv.className = 'lightbox-likes';
+          likesDiv.setAttribute('data-photo', photoName);
+
+          const likeBtn = document.createElement('button');
+          likeBtn.className = 'like-button';
+          likeBtn.setAttribute('aria-label', 'Like photo');
+          // Use addEventListener instead of inline onclick (safer)
+          likeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (typeof toggleLike === 'function') {
+              toggleLike(photoName, this);
+            }
+          });
+
+          const heartSpan = document.createElement('span');
+          heartSpan.className = 'heart';
+          heartSpan.textContent = '🤍';
+          likeBtn.appendChild(heartSpan);
+
+          const countSpan = document.createElement('span');
+          countSpan.className = 'like-count';
+          countSpan.textContent = '0';
+          likeBtn.appendChild(countSpan);
+
+          likesDiv.appendChild(likeBtn);
+          lightbox.appendChild(likesDiv);
+
+          lightbox.style.display = 'block';
 
           // Call setGallery to enable prev/next navigation
           if (typeof setGallery === 'function') {
@@ -115,8 +195,7 @@
 
           // Load like status
           if(photoName && typeof loadLikeStatus === 'function') {
-            const likeDiv = document.querySelector('.lightbox-likes');
-            loadLikeStatus(photoName, likeDiv);
+            loadLikeStatus(photoName, likesDiv);
           }
         });
       });
