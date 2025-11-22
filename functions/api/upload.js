@@ -82,9 +82,9 @@ function base64ToArrayBuffer(base64) {
 
 // Get client IP address
 function getClientIP(request) {
-  return request.headers.get('CF-Connecting-IP') ||
-         request.headers.get('X-Forwarded-For')?.split(',')[0].trim() ||
-         'unknown';
+  // Security: Only trust Cloudflare's CF-Connecting-IP header
+  // Do NOT fall back to X-Forwarded-For as it can be spoofed by attackers
+  return request.headers.get('CF-Connecting-IP') || 'unknown';
 }
 
 // Generate a clean filename

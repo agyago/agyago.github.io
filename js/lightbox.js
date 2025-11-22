@@ -1,3 +1,24 @@
+// Security: Escape HTML special characters to prevent XSS
+function escapeHtml(text) {
+    if (!text) return '';
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Security: Escape for use in CSS url() - only allow safe characters
+function escapeUrl(url) {
+    if (!url) return '';
+    // Only allow http(s) URLs and relative paths, encode special chars
+    return encodeURI(url).replace(/'/g, '%27').replace(/"/g, '%22');
+}
+
+// Security: Validate video ID (alphanumeric, dash, underscore only)
+function sanitizeVideoId(id) {
+    if (!id) return '';
+    return id.replace(/[^a-zA-Z0-9_-]/g, '');
+}
+
 function is_youtubelink(url) {
     var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
     return (url.match(p)) ? RegExp.$1 : false;
@@ -20,7 +41,8 @@ function is_vimeolink(url,el) {
 
                 el.addEventListener("click", function(event) {
                     event.preventDefault();
-                    document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="videoWrapperContainer"><div class="videoWrapper"><iframe src="https://player.vimeo.com/video/'+el.getAttribute('data-id')+'/?autoplay=1&byline=0&title=0&portrait=0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
+                    var safeId = sanitizeVideoId(el.getAttribute('data-id'));
+                    document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="videoWrapperContainer"><div class="videoWrapper"><iframe src="https://player.vimeo.com/video/'+safeId+'/?autoplay=1&byline=0&title=0&portrait=0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
                     document.getElementById('lightbox').style.display = 'block';
 
                     setGallery(this);
@@ -113,13 +135,14 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('lightbox').style.display = 'none';
         }
     });
-    
+
     //add the youtube lightbox on click
     var elements = document.querySelectorAll('a.lightbox-youtube');
     elements.forEach(element => {
         element.addEventListener("click", function(event) {
             event.preventDefault();
-            document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="videoWrapperContainer"><div class="videoWrapper"><iframe src="https://www.youtube.com/embed/'+this.getAttribute('data-id')+'?autoplay=1&showinfo=0&rel=0"></iframe></div>';
+            var safeId = sanitizeVideoId(this.getAttribute('data-id'));
+            document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="videoWrapperContainer"><div class="videoWrapper"><iframe src="https://www.youtube.com/embed/'+safeId+'?autoplay=1&showinfo=0&rel=0"></iframe></div>';
             document.getElementById('lightbox').style.display = 'block';
 
             setGallery(this);
@@ -132,16 +155,80 @@ document.addEventListener("DOMContentLoaded", function() {
         element.addEventListener("click", function(event) {
             event.preventDefault();
             var photoName = this.getAttribute('data-photo') || '';
+            var safePhotoName = escapeHtml(photoName);
+            var safeHref = escapeUrl(this.getAttribute('href'));
+            var safeTitle = escapeHtml(this.getAttribute('title'));
 
-            document.getElementById('lightbox').innerHTML = '<a id="close"></a><a id="next">&rsaquo;</a><a id="prev">&lsaquo;</a><div class="img" style="background: url(\''+this.getAttribute('href')+'\') center center / contain no-repeat;" title="'+this.getAttribute('title')+'" ><img src="'+this.getAttribute('href')+'" alt="'+this.getAttribute('title')+'" /></div><span>'+this.getAttribute('title')+'</span><div class="lightbox-likes" data-photo="'+photoName+'"><button class="like-button" onclick="event.stopPropagation(); toggleLike(\''+photoName+'\', this)" aria-label="Like photo"><span class="heart">🤍</span><span class="like-count">0</span></button></div>';
-            document.getElementById('lightbox').style.display = 'block';
+            // Build lightbox HTML with escaped values
+            var lightbox = document.getElementById('lightbox');
+            lightbox.innerHTML = '';
+
+            // Create elements safely
+            var closeBtn = document.createElement('a');
+            closeBtn.id = 'close';
+            lightbox.appendChild(closeBtn);
+
+            var nextBtn = document.createElement('a');
+            nextBtn.id = 'next';
+            nextBtn.innerHTML = '&rsaquo;';
+            lightbox.appendChild(nextBtn);
+
+            var prevBtn = document.createElement('a');
+            prevBtn.id = 'prev';
+            prevBtn.innerHTML = '&lsaquo;';
+            lightbox.appendChild(prevBtn);
+
+            var imgDiv = document.createElement('div');
+            imgDiv.className = 'img';
+            imgDiv.style.background = "url('" + safeHref + "') center center / contain no-repeat";
+            imgDiv.title = safeTitle;
+
+            var img = document.createElement('img');
+            img.src = safeHref;
+            img.alt = safeTitle;
+            imgDiv.appendChild(img);
+            lightbox.appendChild(imgDiv);
+
+            var titleSpan = document.createElement('span');
+            titleSpan.textContent = safeTitle;
+            lightbox.appendChild(titleSpan);
+
+            // Create likes section
+            var likesDiv = document.createElement('div');
+            likesDiv.className = 'lightbox-likes';
+            likesDiv.setAttribute('data-photo', safePhotoName);
+
+            var likeBtn = document.createElement('button');
+            likeBtn.className = 'like-button';
+            likeBtn.setAttribute('aria-label', 'Like photo');
+            // Use addEventListener instead of inline onclick (safer)
+            likeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (typeof toggleLike === 'function') {
+                    toggleLike(photoName, this);
+                }
+            });
+
+            var heartSpan = document.createElement('span');
+            heartSpan.className = 'heart';
+            heartSpan.textContent = '🤍';
+            likeBtn.appendChild(heartSpan);
+
+            var countSpan = document.createElement('span');
+            countSpan.className = 'like-count';
+            countSpan.textContent = '0';
+            likeBtn.appendChild(countSpan);
+
+            likesDiv.appendChild(likeBtn);
+            lightbox.appendChild(likesDiv);
+
+            lightbox.style.display = 'block';
 
             setGallery(this);
 
             // Load like status for this photo
             if(photoName && typeof loadLikeStatus === 'function') {
-                var likeDiv = document.querySelector('.lightbox-likes');
-                loadLikeStatus(photoName, likeDiv);
+                loadLikeStatus(photoName, likesDiv);
             }
         });
     });
