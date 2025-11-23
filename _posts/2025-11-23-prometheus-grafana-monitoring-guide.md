@@ -12,21 +12,6 @@ We'll start with the fundamentals and progress to production-ready configuration
 
 ---
 
-## Table of Contents
-
-1. [Why Prometheus and Grafana?](#why-prometheus-and-grafana)
-2. [Understanding the Architecture](#understanding-the-architecture)
-3. [Core Concepts](#core-concepts)
-4. [Setting Up Prometheus](#setting-up-prometheus)
-5. [Setting Up Grafana](#setting-up-grafana)
-6. [What Should You Monitor?](#what-should-you-monitor)
-7. [PromQL: Querying Your Metrics](#promql-querying-your-metrics)
-8. [Alerting with Alertmanager](#alerting-with-alertmanager)
-9. [Production Considerations](#production-considerations)
-10. [Troubleshooting Common Issues](#troubleshooting-common-issues)
-
----
-
 ## Why Prometheus and Grafana?
 
 Before diving into setup, let's understand why this stack has become the industry standard.
