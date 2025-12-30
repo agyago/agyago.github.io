@@ -153,12 +153,15 @@ export async function onRequest({ request, env }) {
     const sessionCookie = `session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60}`;
     const clearStateCookie = 'oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0';
 
+    // Create Headers object to support multiple Set-Cookie headers
+    const headers = new Headers();
+    headers.append('Location', '/upload.html');
+    headers.append('Set-Cookie', sessionCookie);
+    headers.append('Set-Cookie', clearStateCookie);
+
     return new Response(null, {
       status: 302,
-      headers: {
-        'Location': '/upload.html',
-        'Set-Cookie': [sessionCookie, clearStateCookie]
-      }
+      headers: headers
     });
 
   } catch (error) {
