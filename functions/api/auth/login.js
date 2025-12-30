@@ -42,9 +42,10 @@ export async function onRequest({ env }) {
     const githubAuthUrl = `https://github.com/login/oauth/authorize?${params.toString()}`;
 
     // Store state in secure cookie for verification in callback
-    return Response.redirect(githubAuthUrl, {
+    return new Response(null, {
       status: 302,
       headers: {
+        'Location': githubAuthUrl,
         'Set-Cookie': `oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600` // 10 min expiry
       }
     });
