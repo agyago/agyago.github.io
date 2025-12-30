@@ -1,0 +1,255 @@
+---
+layout: defaults
+title: Workout Tracker
+---
+
+<!-- PWA Meta Tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Workout">
+<meta name="theme-color" content="#1a1a1a">
+<link rel="manifest" href="/workout-tracker/manifest.json">
+<link rel="apple-touch-icon" href="/workout-tracker/icons/icon-180.png">
+
+<!-- Workout Tracker Styles -->
+<link rel="stylesheet" href="/css/workout-tracker.css">
+
+<!-- Chart.js for progress visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<div id="workout-app">
+    <!-- Auth Section (shown when not logged in) -->
+    <div id="auth-section" class="wt-auth-section">
+        <div class="wt-auth-container">
+            <div class="wt-auth-icon">💪</div>
+            <h2>Workout Tracker</h2>
+            <p>Login with GitHub to access your workouts</p>
+            <a href="/api/auth/login" class="wt-github-btn">
+                <svg viewBox="0 0 16 16" fill="currentColor" width="20" height="20">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                </svg>
+                Login with GitHub
+            </a>
+        </div>
+    </div>
+
+    <!-- Main App Section (shown when logged in) -->
+    <div id="app-section" class="wt-app-section" style="display: none;">
+        <!-- User Info Bar -->
+        <div class="wt-user-bar">
+            <span>Logged in as <strong id="wt-username"></strong></span>
+            <button class="wt-logout-btn" onclick="workoutLogout()">Logout</button>
+        </div>
+
+        <!-- Tab Navigation -->
+        <nav class="wt-tabs">
+            <button class="wt-tab active" data-tab="log">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <path d="M12 5v14M5 12h14"/>
+                </svg>
+                Log
+            </button>
+            <button class="wt-tab" data-tab="history">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                History
+            </button>
+            <button class="wt-tab" data-tab="progress">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <path d="M3 3v18h18"/>
+                    <path d="m19 9-5 5-4-4-3 3"/>
+                </svg>
+                Progress
+            </button>
+            <button class="wt-tab" data-tab="settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+                Settings
+            </button>
+        </nav>
+
+        <!-- Tab Content: Log -->
+        <div id="tab-log" class="wt-tab-content active">
+            <div class="wt-form">
+                <div class="wt-form-group">
+                    <label for="wt-exercise">Exercise</label>
+                    <div class="wt-select-row">
+                        <select id="wt-exercise">
+                            <option value="">Select exercise...</option>
+                        </select>
+                        <button class="wt-icon-btn" id="wt-add-exercise-btn" title="Add new exercise">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="wt-form-row">
+                    <div class="wt-form-group">
+                        <label for="wt-weight">Weight</label>
+                        <div class="wt-input-unit">
+                            <input type="number" id="wt-weight" placeholder="0" step="0.5" min="0">
+                            <span class="wt-unit" id="wt-weight-unit">kg</span>
+                        </div>
+                    </div>
+                    <div class="wt-form-group">
+                        <label for="wt-reps">Reps</label>
+                        <input type="number" id="wt-reps" placeholder="0" min="1">
+                    </div>
+                    <div class="wt-form-group">
+                        <label for="wt-sets">Sets</label>
+                        <input type="number" id="wt-sets" placeholder="0" min="1">
+                    </div>
+                </div>
+
+                <div class="wt-form-group">
+                    <label for="wt-date">Date</label>
+                    <input type="date" id="wt-date">
+                </div>
+
+                <div class="wt-form-group">
+                    <label for="wt-notes">Notes (optional)</label>
+                    <input type="text" id="wt-notes" placeholder="e.g., felt strong today">
+                </div>
+
+                <button class="wt-btn-primary" id="wt-log-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    Log Workout
+                </button>
+            </div>
+
+            <!-- Today's Workouts -->
+            <div class="wt-section">
+                <h3>Today's Workouts</h3>
+                <div id="wt-today-list" class="wt-workout-list">
+                    <div class="wt-empty">No workouts logged today</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: History -->
+        <div id="tab-history" class="wt-tab-content">
+            <div class="wt-filters">
+                <select id="wt-history-exercise">
+                    <option value="">All exercises</option>
+                </select>
+                <select id="wt-history-period">
+                    <option value="7">Last 7 days</option>
+                    <option value="30" selected>Last 30 days</option>
+                    <option value="90">Last 3 months</option>
+                    <option value="all">All time</option>
+                </select>
+            </div>
+            <div id="wt-history-list" class="wt-history-list">
+                <div class="wt-empty">No workouts found</div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Progress -->
+        <div id="tab-progress" class="wt-tab-content">
+            <div class="wt-filters">
+                <select id="wt-progress-exercise">
+                    <option value="">Select exercise to view progress...</option>
+                </select>
+            </div>
+            <div class="wt-chart-container">
+                <canvas id="wt-progress-chart"></canvas>
+            </div>
+            <div id="wt-progress-stats" class="wt-stats-grid">
+                <div class="wt-empty">Select an exercise to view stats</div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Settings -->
+        <div id="tab-settings" class="wt-tab-content">
+            <div class="wt-settings-section">
+                <h3>Preferences</h3>
+                <div class="wt-setting-item">
+                    <label for="wt-unit-select">Weight Unit</label>
+                    <select id="wt-unit-select">
+                        <option value="kg">Kilograms (kg)</option>
+                        <option value="lbs">Pounds (lbs)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="wt-settings-section">
+                <h3>Manage Exercises</h3>
+                <div id="wt-exercise-list" class="wt-exercise-list"></div>
+                <div class="wt-add-exercise-row">
+                    <input type="text" id="wt-new-exercise" placeholder="Add new exercise...">
+                    <button class="wt-btn-secondary" id="wt-add-exercise-setting">Add</button>
+                </div>
+            </div>
+
+            <div class="wt-settings-section">
+                <h3>Data Management</h3>
+                <div class="wt-data-buttons">
+                    <button class="wt-btn-secondary" id="wt-export-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Export JSON
+                    </button>
+                    <button class="wt-btn-secondary" id="wt-import-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        Import JSON
+                    </button>
+                    <input type="file" id="wt-import-file" accept=".json" style="display:none">
+                </div>
+                <button class="wt-btn-danger" id="wt-clear-btn">Clear All Data</button>
+            </div>
+
+            <div class="wt-settings-section">
+                <h3>About</h3>
+                <p class="wt-about">Workout Tracker v1.0<br>Data stored locally on this device.<br>Remember to export backups!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Exercise Modal -->
+    <div id="wt-modal" class="wt-modal">
+        <div class="wt-modal-content">
+            <div class="wt-modal-header">
+                <h3>Add Exercise</h3>
+                <button class="wt-modal-close" id="wt-modal-close">&times;</button>
+            </div>
+            <div class="wt-modal-body">
+                <input type="text" id="wt-modal-exercise" placeholder="Exercise name...">
+                <button class="wt-btn-primary" id="wt-modal-add">Add Exercise</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="wt-toast" class="wt-toast"></div>
+</div>
+
+<!-- Offline Indicator -->
+<div id="wt-offline" class="wt-offline">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <line x1="1" y1="1" x2="23" y2="23"/>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+        <path d="M10.71 5.05A16 16 0 0 1 22.58 9"/>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+        <line x1="12" y1="20" x2="12.01" y2="20"/>
+    </svg>
+    Offline Mode
+</div>
+
+<script src="/js/workout-tracker.js"></script>

@@ -1,0 +1,784 @@
+/* ============================================
+   WORKOUT TRACKER STYLES
+   Designed to work with cheezychinito.com theme
+   ============================================ */
+
+/* Variables that complement the existing dark theme */
+:root {
+    --wt-bg-primary: #1a1a1a;
+    --wt-bg-secondary: #242424;
+    --wt-bg-card: #2a2a2a;
+    --wt-text-primary: #ffffff;
+    --wt-text-secondary: #a0a0a0;
+    --wt-text-muted: #666666;
+    --wt-accent: #00d4aa;
+    --wt-accent-hover: #00b894;
+    --wt-danger: #ff6b6b;
+    --wt-border: #333333;
+    --wt-radius: 8px;
+}
+
+/* ============================================
+   AUTH SECTION
+   ============================================ */
+
+.wt-auth-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: 40px 20px;
+}
+
+.wt-auth-container {
+    text-align: center;
+    max-width: 320px;
+}
+
+.wt-auth-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.wt-auth-container h2 {
+    margin: 0 0 10px;
+    font-size: 1.75rem;
+}
+
+.wt-auth-container p {
+    color: var(--wt-text-secondary);
+    margin-bottom: 24px;
+}
+
+.wt-github-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #24292e;
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--wt-radius);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.wt-github-btn:hover {
+    background: #2f363d;
+    color: white;
+}
+
+/* ============================================
+   APP SECTION
+   ============================================ */
+
+.wt-app-section {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 0 100px;
+}
+
+.wt-user-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--wt-bg-secondary);
+    border-radius: var(--wt-radius);
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+
+.wt-logout-btn {
+    background: var(--wt-danger);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   TAB NAVIGATION
+   ============================================ */
+
+.wt-tabs {
+    display: flex;
+    background: var(--wt-bg-secondary);
+    border-radius: var(--wt-radius);
+    padding: 6px;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.wt-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--wt-text-secondary);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.wt-tab:hover {
+    background: var(--wt-bg-card);
+}
+
+.wt-tab.active {
+    background: var(--wt-accent);
+    color: #000;
+}
+
+.wt-tab svg {
+    flex-shrink: 0;
+}
+
+/* ============================================
+   TAB CONTENT
+   ============================================ */
+
+.wt-tab-content {
+    display: none;
+}
+
+.wt-tab-content.active {
+    display: block;
+    animation: wtFadeIn 0.2s ease;
+}
+
+@keyframes wtFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.wt-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.wt-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.wt-form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--wt-text-secondary);
+}
+
+.wt-form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.wt-select-row {
+    display: flex;
+    gap: 8px;
+}
+
+.wt-select-row select {
+    flex: 1;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--wt-border);
+    border-radius: var(--wt-radius);
+    background: var(--wt-bg-secondary);
+    color: var(--wt-text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--wt-accent);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2);
+}
+
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 36px;
+}
+
+.wt-input-unit {
+    position: relative;
+}
+
+.wt-input-unit input {
+    padding-right: 40px;
+}
+
+.wt-unit {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--wt-text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.wt-icon-btn {
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+    border: 1px solid var(--wt-border);
+    border-radius: var(--wt-radius);
+    background: var(--wt-bg-secondary);
+    color: var(--wt-accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.wt-icon-btn:hover {
+    background: var(--wt-accent);
+    color: #000;
+    border-color: var(--wt-accent);
+}
+
+/* Hide number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.wt-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--wt-radius);
+    background: var(--wt-accent);
+    color: #000;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.wt-btn-primary:hover {
+    background: var(--wt-accent-hover);
+}
+
+.wt-btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1px solid var(--wt-border);
+    border-radius: var(--wt-radius);
+    background: var(--wt-bg-secondary);
+    color: var(--wt-text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.wt-btn-secondary:hover {
+    background: var(--wt-bg-card);
+}
+
+.wt-btn-danger {
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid var(--wt-danger);
+    border-radius: var(--wt-radius);
+    background: transparent;
+    color: var(--wt-danger);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+}
+
+.wt-btn-danger:hover {
+    background: var(--wt-danger);
+    color: white;
+}
+
+/* ============================================
+   WORKOUT LIST
+   ============================================ */
+
+.wt-section {
+    margin-top: 32px;
+}
+
+.wt-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--wt-text-secondary);
+    margin-bottom: 12px;
+}
+
+.wt-workout-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wt-workout-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    background: var(--wt-bg-card);
+    border-radius: var(--wt-radius);
+    border: 1px solid var(--wt-border);
+}
+
+.wt-workout-main {
+    flex: 1;
+}
+
+.wt-workout-exercise {
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.wt-workout-details {
+    display: flex;
+    gap: 16px;
+    font-size: 0.85rem;
+    color: var(--wt-text-secondary);
+}
+
+.wt-workout-details strong {
+    color: var(--wt-accent);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+.wt-workout-notes {
+    font-size: 0.8rem;
+    color: var(--wt-text-muted);
+    margin-top: 6px;
+    font-style: italic;
+}
+
+.wt-delete-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--wt-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.wt-delete-btn:hover {
+    color: var(--wt-danger);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.wt-empty {
+    text-align: center;
+    padding: 32px;
+    color: var(--wt-text-muted);
+}
+
+/* ============================================
+   HISTORY
+   ============================================ */
+
+.wt-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.wt-filters select {
+    flex: 1;
+    font-size: 0.9rem;
+    padding: 10px 36px 10px 12px;
+}
+
+.wt-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wt-history-day {
+    border-bottom: 1px solid var(--wt-border);
+    padding-bottom: 20px;
+}
+
+.wt-history-day:last-child {
+    border-bottom: none;
+}
+
+.wt-history-date {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--wt-text-secondary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wt-date-badge {
+    background: var(--wt-accent);
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ============================================
+   PROGRESS CHART
+   ============================================ */
+
+.wt-chart-container {
+    background: var(--wt-bg-card);
+    border-radius: var(--wt-radius);
+    padding: 16px;
+    border: 1px solid var(--wt-border);
+    margin-bottom: 20px;
+    height: 280px;
+}
+
+.wt-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.wt-stat-card {
+    background: var(--wt-bg-card);
+    border-radius: var(--wt-radius);
+    padding: 16px;
+    border: 1px solid var(--wt-border);
+    text-align: center;
+}
+
+.wt-stat-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--wt-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.wt-stat-value {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--wt-accent);
+}
+
+.wt-stat-value.positive {
+    color: var(--wt-accent);
+}
+
+.wt-stat-value.negative {
+    color: var(--wt-danger);
+}
+
+.wt-stat-subtext {
+    font-size: 0.75rem;
+    color: var(--wt-text-secondary);
+    margin-top: 2px;
+}
+
+/* ============================================
+   SETTINGS
+   ============================================ */
+
+.wt-settings-section {
+    margin-bottom: 28px;
+}
+
+.wt-settings-section h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--wt-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 12px;
+}
+
+.wt-setting-item {
+    margin-bottom: 12px;
+}
+
+.wt-setting-item label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--wt-text-secondary);
+    margin-bottom: 6px;
+}
+
+.wt-exercise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+}
+
+.wt-exercise-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: var(--wt-bg-card);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.wt-exercise-delete {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--wt-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wt-exercise-delete:hover {
+    color: var(--wt-danger);
+}
+
+.wt-add-exercise-row {
+    display: flex;
+    gap: 8px;
+}
+
+.wt-add-exercise-row input {
+    flex: 1;
+}
+
+.wt-data-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.wt-data-buttons .wt-btn-secondary {
+    flex: 1;
+}
+
+.wt-about {
+    font-size: 0.85rem;
+    color: var(--wt-text-muted);
+    line-height: 1.6;
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+
+.wt-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.wt-modal.active {
+    display: flex;
+}
+
+.wt-modal-content {
+    width: 100%;
+    max-width: 360px;
+    background: var(--wt-bg-secondary);
+    border-radius: var(--wt-radius);
+    border: 1px solid var(--wt-border);
+}
+
+.wt-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--wt-border);
+}
+
+.wt-modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.wt-modal-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--wt-text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wt-modal-close:hover {
+    color: var(--wt-text-primary);
+}
+
+.wt-modal-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ============================================
+   TOAST
+   ============================================ */
+
+.wt-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--wt-bg-card);
+    color: var(--wt-text-primary);
+    padding: 12px 20px;
+    border-radius: 24px;
+    border: 1px solid var(--wt-border);
+    font-size: 0.9rem;
+    z-index: 10001;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.wt-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.wt-toast.success {
+    border-color: var(--wt-accent);
+}
+
+.wt-toast.error {
+    border-color: var(--wt-danger);
+}
+
+/* ============================================
+   OFFLINE INDICATOR
+   ============================================ */
+
+.wt-offline {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-60px);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffd93d;
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.wt-offline.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media screen and (max-width: 500px) {
+    .wt-form-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .wt-form-row input {
+        padding: 10px 8px;
+        font-size: 0.95rem;
+    }
+    
+    .wt-workout-details {
+        flex-wrap: wrap;
+        gap: 8px 16px;
+    }
+    
+    .wt-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .wt-stat-card {
+        padding: 12px;
+    }
+    
+    .wt-stat-value {
+        font-size: 1.25rem;
+    }
+}
